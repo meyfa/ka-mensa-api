@@ -1,0 +1,34 @@
+{
+  "name": "ka-mensa-api",
+  "version": "0.0.0",
+  "description": "Karlsruhe (KIT) Mensa API server",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "mocha --recursive"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/meyfa/ka-mensa-api.git"
+  },
+  "keywords": [
+    "karlsruhe",
+    "mensa",
+    "canteen",
+    "api-server"
+  ],
+  "author": "Fabian Meyer",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/meyfa/ka-mensa-api/issues"
+  },
+  "homepage": "https://github.com/meyfa/ka-mensa-api",
+  "dependencies": {
+    "express": "^4.17.1",
+    "ka-mensa-fetch": "^0.1.0"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "mocha": "^6.2.2"
+  }
+}
