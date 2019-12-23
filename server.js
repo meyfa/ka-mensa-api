@@ -22,6 +22,7 @@ const PORT = 3000;
     });
 
     app.use("/meta", require("./routes/meta"));
+    app.use("/canteens", require("./routes/canteens"));
 
     app.listen(PORT);
 })();
