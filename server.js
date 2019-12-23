@@ -21,5 +21,7 @@ const PORT = 3000;
         res.status(200).json({ success: true });
     });
 
+    app.use("/meta", require("./routes/meta"));
+
     app.listen(PORT);
 })();
