@@ -35,6 +35,7 @@ const FETCH_INTERVAL = 6 * 60 * 60 * 1000; // 6 hours
 
     app.use("/meta", require("./routes/meta"));
     app.use("/canteens", require("./routes/canteens"));
+    app.use("/plans", require("./routes/plans"));
 
     app.listen(PORT, () => {
         console.log("Server listening on :" + PORT);
