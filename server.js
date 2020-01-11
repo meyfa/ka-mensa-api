@@ -2,6 +2,8 @@
 
 const express = require("express");
 
+const runFetchJob = require("./lib/job");
+
 
 // CONSTANTS
 
@@ -11,10 +13,20 @@ const express = require("express");
  */
 const PORT = 3000;
 
+/**
+ * Time in milliseconds between automated plan fetching.
+ * @type {Number}
+ */
+const FETCH_INTERVAL = 6 * 60 * 60 * 1000; // 6 hours
+
 
 // STARTUP ROUTINE
 
 (async () => {
+    // setup fetch job
+    await runFetchJob();
+    setInterval(runFetchJob, FETCH_INTERVAL);
+
     const app = express();
 
     app.get("/", async (req, res, next) => {
@@ -24,5 +36,7 @@ const PORT = 3000;
     app.use("/meta", require("./routes/meta"));
     app.use("/canteens", require("./routes/canteens"));
 
-    app.listen(PORT);
+    app.listen(PORT, () => {
+        console.log("Server listening on :" + PORT);
+    });
 })();
