@@ -23,6 +23,9 @@
     "url": "https://github.com/meyfa/ka-mensa-api/issues"
   },
   "homepage": "https://github.com/meyfa/ka-mensa-api",
+  "engines": {
+    "node": ">=10.0.0"
+  },
   "dependencies": {
     "express": "^4.17.1",
     "group-items": "^0.1.0",
@@ -31,6 +34,6 @@
   },
   "devDependencies": {
     "chai": "^4.2.0",
-    "mocha": "^6.2.2"
+    "mocha": "^7.0.0"
   }
 }
