@@ -1,43 +1,34 @@
 "use strict";
 
 const express = require("express");
+const ms = require("ms");
 
+const config = require("./config");
 const runFetchJob = require("./lib/job");
-
-
-// CONSTANTS
-
-/**
- * Server port.
- * @type {Number}
- */
-const PORT = 3000;
-
-/**
- * Time in milliseconds between automated plan fetching.
- * @type {Number}
- */
-const FETCH_INTERVAL = 6 * 60 * 60 * 1000; // 6 hours
 
 
 // STARTUP ROUTINE
 
 (async () => {
     // setup fetch job
+    const fetchInterval = ms(config.fetchJob.interval);
     await runFetchJob();
-    setInterval(runFetchJob, FETCH_INTERVAL);
+    setInterval(runFetchJob, fetchInterval);
 
     const app = express();
 
-    app.get("/", async (req, res, next) => {
-        res.status(200).json({ success: true });
-    });
+    // routes
+    const router = express.Router();
+    router.use("/", require("./routes/default"));
+    router.use("/meta", require("./routes/meta"));
+    router.use("/canteens", require("./routes/canteens"));
+    router.use("/plans", require("./routes/plans"));
+    app.use(config.server.base, router);
 
-    app.use("/meta", require("./routes/meta"));
-    app.use("/canteens", require("./routes/canteens"));
-    app.use("/plans", require("./routes/plans"));
-
-    app.listen(PORT, () => {
-        console.log("Server listening on :" + PORT);
+    // listen
+    const port = config.server.port;
+    const host = config.server.host;
+    app.listen(port, host, () => {
+        console.log("Server listening on :" + port);
     });
 })();

@@ -30,7 +30,8 @@
     "express": "^4.17.1",
     "group-items": "^0.1.0",
     "ka-mensa-fetch": "^0.2.1",
-    "moment": "^2.24.0"
+    "moment": "^2.24.0",
+    "ms": "^2.1.2"
   },
   "devDependencies": {
     "chai": "^4.2.0",
