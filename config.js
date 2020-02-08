@@ -49,5 +49,10 @@ module.exports = {
          * @type {String}
          */
         interval: "6 hours",
+        /**
+         * How many days into the future to fetch.
+         * @type {Number}
+         */
+        futureDays: 14,
     },
 };
