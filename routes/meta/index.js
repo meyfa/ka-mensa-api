@@ -1,15 +1,13 @@
-"use strict";
+'use strict'
 
-const express = require("express");
-
+const express = require('express')
 
 // ROUTES
 
-const router = express.Router();
+const router = express.Router()
 
-router.use("/legend", require("./legend"));
-
+router.use('/legend', require('./legend'))
 
 // EXPORTS
 
-module.exports = router;
+module.exports = router
