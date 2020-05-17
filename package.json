@@ -31,7 +31,7 @@
   "dependencies": {
     "express": "^4.17.1",
     "group-items": "^1.0.0",
-    "ka-mensa-fetch": "^0.5.0",
+    "ka-mensa-fetch": "^0.5.1",
     "moment": "^2.25.3",
     "ms": "^2.1.2"
   },
