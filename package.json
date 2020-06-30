@@ -31,8 +31,8 @@
   "dependencies": {
     "express": "^4.17.1",
     "group-items": "^1.0.0",
-    "ka-mensa-fetch": "^0.5.2",
-    "moment": "^2.25.3",
+    "ka-mensa-fetch": "^0.5.3",
+    "moment": "^2.27.0",
     "ms": "^2.1.2"
   },
   "devDependencies": {
@@ -44,6 +44,6 @@
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.1",
-    "mocha": "^7.1.2"
+    "mocha": "^8.0.1"
   }
 }
