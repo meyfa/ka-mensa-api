@@ -3,4 +3,58 @@
 [![Build Status](https://travis-ci.com/meyfa/ka-mensa-api.svg?branch=master)](https://travis-ci.com/meyfa/ka-mensa-api)
 [![Maintainability](https://api.codeclimate.com/v1/badges/9b1f9ce6f3bec49c26a1/maintainability)](https://codeclimate.com/github/meyfa/ka-mensa-api/maintainability)
 
-Karlsruhe (KIT) Mensa API server
+
+## Introduction
+
+`ka-mensa-api` is one component in a three-part project whose goal it is to
+aggregate, process and visualize the Studierendenwerk Karlsruhe's canteen plans
+in ways superior to the official sources.
+
+**Disclaimer:** This project is neither affiliated with nor endorsed by the
+Studierendenwerk Karlsruhe or the Karlsruhe Institute of Technology.
+
+The entire project is written in JavaScript and is composed as follows:
+
+- [ka-mensa-fetch](https://github.com/meyfa/ka-mensa-fetch): library package
+    responsible for the fetching of raw plan data and conversion into canonical,
+    easily digestible JSON documents
+- [ka-mensa-api](https://github.com/meyfa/ka-mensa-api): NodeJS server that
+    utilizes the fetcher to continuously collect meal plans and makes them
+    available via REST API
+- [ka-mensa-ui](https://github.com/meyfa/ka-mensa-ui): single-page web app
+    that loads meal plans from an API instance and displays them in a modern,
+    responsive interface with filtering and color-coding capabilities
+
+
+## Setup
+
+Ensure Node and NPM are available on your system. Then clone this repository
+somewhere and run `npm install` to load dependencies.
+
+Open up `config.js` and configure to your liking. Notice that network options
+are rather limited. If you want HTTPS support, CORS headers or advanced
+embedding into existing domain structures, you will need to set up a reverse
+proxy like nginx.
+
+To start the server, run `npm start`. It will immediately fetch the most recent
+set of plans, then listen for API requests. Plan polling will continue
+indefinitely with the interval set in `config.js`.
+
+
+## Development
+
+Contributions are welcome. Guidelines:
+
+- By contributing, you agree to make your changes available under the MIT
+    license of this project.
+- Please write unit tests for as much code as possible.
+    * To run: `npm test`
+- Make sure to adhere to JS standard style.
+    * Linter: `npm run lint`
+    * Automatic fixing of most style issues: `npm run lint-fix`
+
+
+## Documentation
+
+A document outlining the API provided by this software is available:
+[API_DOCUMENTATION.md](https://github.com/meyfa/ka-mensa-api/blob/master/API_DOCUMENTATION.md).
