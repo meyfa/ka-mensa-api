@@ -28,6 +28,12 @@ function mapPlan (raw) {
 
 const router = express.Router()
 
+router.get('/', async (req, res, next) => {
+  const dates = await cache.list()
+  const results = dates.map(date => ({ date }))
+  res.status(200).json({ success: true, data: results })
+})
+
 router.get('/:date(\\d{4}-\\d{2}-\\d{2})', async (req, res, next) => {
   const dateObj = parseDate(req.params.date)
   if (!dateObj) {

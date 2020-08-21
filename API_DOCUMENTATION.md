@@ -18,6 +18,7 @@ for general project information.
 	- [`GET /canteens/{canteen}`](#get-canteenscanteen)
 	- [`GET /canteens/{canteen}/lines`](#get-canteenscanteenlines)
 	- [`GET /canteens/{canteen}/lines/{line}`](#get-canteenscanteenlinesline)
+	- [`GET /plans`](#get-plans)
 	- [`GET /plans/{date}`](#get-plansdate)
 
 <!-- /TOC -->
@@ -262,6 +263,45 @@ Example:
 **Possible errors:**
 
 - `404 Not Found` - if the canteen id is invalid, or if the line id is invalid
+
+---
+
+### `GET /plans`
+
+This endpoint retrieves a summary of all available plans.
+
+**Sample request:**
+
+```sh
+$ curl http://my-api-domain/plans
+```
+
+**Response:**
+
+An array of objects, each containing a date specifier for which a plan could
+be retrieved. Example:
+
+```js
+{
+  "success": true,
+  "data": [
+    {
+      "date": { "day": 19, "month": 7, "year": 2020 }
+    },
+    {
+      "date": { "day": 20, "month": 7, "year": 2020 }
+    },
+    {
+      "date": { "day": 21, "month": 7, "year": 2020 }
+    },
+    // ...
+  ]
+}
+```
+
+**Possible errors:**
+
+none
 
 ---
 
