@@ -11,21 +11,17 @@ const canteens = require('ka-mensa-fetch/data/canteens.json')
  *
  * @type {Map}
  */
-const CANTEENS_BY_ID = (() => {
-  return new Map(canteens.map(item => [item.id, item]))
-})()
+const CANTEENS_BY_ID = new Map(canteens.map(canteen => [canteen.id, canteen]))
 
 /**
  * A map: canteen id -> (map: line id -> line object).
  *
  * @type {Map}
  */
-const CANTEEN_LINES_BY_ID = (() => {
-  return new Map(canteens.map(canteen => [
-    canteen.id,
-    new Map(canteen.lines.map(line => [line.id, line]))
-  ]))
-})()
+const CANTEEN_LINES_BY_ID = new Map(canteens.map(canteen => [
+  canteen.id,
+  new Map(canteen.lines.map(line => [line.id, line]))
+]))
 
 // ROUTES
 
@@ -59,7 +55,7 @@ router.get('/:canteenId/lines/:lineId', async (req, res, next) => {
     res.status(404).json({ success: false, error: 'canteen not found' })
     return
   }
-  const line = linesMap ? linesMap.get(req.params.lineId) : null
+  const line = linesMap.get(req.params.lineId)
   if (!line) {
     res.status(404).json({ success: false, error: 'line not found' })
     return
