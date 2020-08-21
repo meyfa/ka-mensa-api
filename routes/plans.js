@@ -2,8 +2,14 @@
 
 const express = require('express')
 
+const canteens = require('ka-mensa-fetch/data/canteens.json')
+
 const cache = require('../lib/cache')
 const parseDate = require('../lib/util/parse-date')
+
+// CONSTANTS
+
+const CANTEEN_IDS = canteens.map(({ id }) => id)
 
 // MAPPER
 
@@ -24,6 +30,24 @@ function mapPlan (raw) {
   }
 }
 
+// UTILITY METHODS
+
+/**
+ * Convert a comma-delimited string into an array of unique entries,
+ * which must all be contained in the set of allowed values.
+ *
+ * @param {string} str The string to parse (e,g, 'foo,bar')
+ * @param {string[]} allowedValues The allowed set (e.g. ['foo', 'bar']).
+ * @returns {string[]|null} The entries, or null if parsing failed.
+ */
+function parseCommaFilter (str, allowedValues) {
+  if (!str) {
+    return null
+  }
+  const items = [...new Set(str.split(','))]
+  return items.every(item => allowedValues.includes(item)) ? items : null
+}
+
 // ROUTES
 
 const router = express.Router()
@@ -41,10 +65,19 @@ router.get('/:date(\\d{4}-\\d{2}-\\d{2})', async (req, res, next) => {
     return
   }
 
-  const data = await cache.get(dateObj)
+  let data = await cache.get(dateObj)
   if (!data) {
     res.status(404).json({ success: false, error: 'plan not found' })
     return
+  }
+
+  if (req.query.canteens) {
+    const canteensFilter = parseCommaFilter(req.query.canteens, CANTEEN_IDS)
+    if (!canteensFilter) {
+      res.status(400).json({ success: false, error: 'invalid filter: canteens' })
+      return
+    }
+    data = data.filter(entry => canteensFilter.includes(entry.id))
   }
 
   const results = data.map(mapPlan)

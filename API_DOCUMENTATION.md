@@ -307,12 +307,18 @@ none
 
 ### `GET /plans/{date}`
 
-This endpoint retrieves the plan for the given date for all available canteens.
+This endpoint retrieves the plan for the given date for all available canteens,
+or optionally a filtered set of canteens.
+
+**Parameters:**
+
+- `canteens`: (optional) comma-separated list of canteens to include;
+    if not specified, result will include all canteens
 
 **Sample request:**
 
 ```sh
-$ curl http://my-api-domain/plans/2020-08-20
+$ curl http://my-api-domain/plans/2020-08-20?canteens=adenauerring,moltke
 ```
 
 **Response:**
@@ -371,5 +377,6 @@ Example:
 
 **Possible errors:**
 
-- `400 Bad Request` - if the date is malformed
+- `400 Bad Request` - if the date is malformed, or if the `canteens` filter
+    is malformed or includes unknown canteens
 - `404 Not Found` - if there is no plan for that date
