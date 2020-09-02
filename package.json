@@ -31,20 +31,20 @@
   "dependencies": {
     "express": "^4.17.1",
     "group-items": "^1.0.0",
-    "ka-mensa-fetch": "^0.5.3",
+    "ka-mensa-fetch": "^1.0.0",
     "moment": "^2.27.0",
     "ms": "^2.1.2",
     "winston": "^3.3.3"
   },
   "devDependencies": {
     "chai": "^4.2.0",
-    "eslint": "^6.8.0",
+    "eslint": "^7.8.1",
     "eslint-config-standard": "^14.1.1",
-    "eslint-plugin-import": "^2.20.2",
-    "eslint-plugin-jsdoc": "^24.0.5",
+    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-jsdoc": "^30.3.1",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.1",
-    "mocha": "^8.1.1"
+    "mocha": "^8.1.3"
   }
 }
