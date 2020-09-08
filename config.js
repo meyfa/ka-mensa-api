@@ -43,10 +43,31 @@ module.exports = {
      */
     interval: '6 hours',
     /**
-     * How many days into the future to fetch.
+     * The data source to be used by the fetch job.
+     * Either 'handicap' (the default) or 'jsonapi' (more reliable, but slightly
+     * different output and requires authentication).
      *
-     * @type {number}
+     * @type {string}
      */
-    futureDays: 14
+    source: 'handicap',
+    handicapOptions: {
+      /**
+       * How many days into the future to fetch when using the handicap source.
+       *
+       * @type {number}
+       */
+      futureDays: 14
+    },
+    jsonapiOptions: {
+      /**
+       * Mandatory authentication credentials for the JSON API.
+       *
+       * @type {object}
+       */
+      auth: {
+        user: '',
+        password: ''
+      }
+    }
   }
 }
