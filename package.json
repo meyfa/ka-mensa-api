@@ -30,6 +30,7 @@
   },
   "dependencies": {
     "express": "^4.17.1",
+    "fs-adapters": "^4.0.0",
     "group-items": "^1.0.0",
     "ka-mensa-fetch": "^1.1.0",
     "moment": "^2.27.0",
