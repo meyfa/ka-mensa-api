@@ -28,13 +28,39 @@ The entire project is written in JavaScript and is composed as follows:
 
 ## Setup
 
+### Prerequisites
+
 Ensure Node and NPM are available on your system. Then clone this repository
 somewhere and run `npm install` to load dependencies.
+
+### Configuration
 
 Open up `config.js` and configure to your liking. Notice that network options
 are rather limited. If you want HTTPS support, CORS headers or advanced
 embedding into existing domain structures, you will need to set up a reverse
 proxy like nginx.
+
+You might want to change the plan fetch source. This will not impact
+ka-mensa-api's behavior but only how it retrieves its data.
+There are two options available:
+
+- `'handicap'` (the default)
+- `'jsonapi'`
+
+The handicap source fetches plans from the Studierendenwerk's website, which
+offers a view for the visually impaired that is quite easy to parse. It allows
+for fetching plans far into the future and is relatively stable. That said, this
+still breaks sometimes, e.g. when the Studierendenwerk renames lines or takes
+other unpredictable actions.
+
+The JSON API source is more reliable. It will basically never break. The
+downside: it requires authentication (you will have to figure out how to obtain
+credentials on your own).
+
+In summary, both sources provide the same information but differ in stability
+and auth requirements.
+
+### Startup
 
 To start the server, run `npm start`. It will immediately fetch the most recent
 set of plans, then listen for API requests. Plan polling will continue
