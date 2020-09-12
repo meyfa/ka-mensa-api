@@ -3,8 +3,10 @@
 const winston = require('winston')
 const express = require('express')
 const ms = require('ms')
+const { DirectoryAdapter } = require('fs-adapters')
 
 const config = require('./config')
+const Cache = require('./lib/cache')
 const runFetchJob = require('./lib/job')
 
 // LOG
@@ -25,19 +27,24 @@ const logger = winston.createLogger({
 // STARTUP ROUTINE
 
 (async () => {
+  const fsAdapter = new DirectoryAdapter(config.cache.directory)
+  await fsAdapter.init()
+
+  const cache = new Cache(fsAdapter)
+
   // setup fetch job
   const fetchInterval = ms(config.fetchJob.interval)
-  await runFetchJob(logger)
-  setInterval(() => runFetchJob(logger), fetchInterval)
+  await runFetchJob(cache, logger)
+  setInterval(() => runFetchJob(cache, logger), fetchInterval)
 
   const app = express()
 
   // routes
   const router = express.Router()
-  router.use('/', require('./routes/default'))
-  router.use('/meta', require('./routes/meta'))
-  router.use('/canteens', require('./routes/canteens'))
-  router.use('/plans', require('./routes/plans'))
+  router.use('/', require('./routes/default')(cache))
+  router.use('/meta', require('./routes/meta')(cache))
+  router.use('/canteens', require('./routes/canteens')(cache))
+  router.use('/plans', require('./routes/plans')(cache))
   app.use(config.server.base, router)
 
   // listen

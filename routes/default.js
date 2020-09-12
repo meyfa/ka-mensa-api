@@ -2,14 +2,14 @@
 
 const express = require('express')
 
-// ROUTES
+// ROUTES FACTORY
 
-const router = express.Router()
+module.exports = (cache) => {
+  const router = express.Router()
 
-router.get('/', async (req, res, next) => {
-  res.status(200).json({ success: true, data: {} })
-})
+  router.get('/', async (req, res, next) => {
+    res.status(200).json({ success: true, data: {} })
+  })
 
-// EXPORTS
-
-module.exports = router
+  return router
+}

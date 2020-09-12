@@ -2,12 +2,12 @@
 
 const express = require('express')
 
-// ROUTES
+// ROUTES FACTORY
 
-const router = express.Router()
+module.exports = (cache) => {
+  const router = express.Router()
 
-router.use('/legend', require('./legend'))
+  router.use('/legend', require('./legend')(cache))
 
-// EXPORTS
-
-module.exports = router
+  return router
+}

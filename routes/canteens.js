@@ -23,46 +23,46 @@ const CANTEEN_LINES_BY_ID = new Map(canteens.map(canteen => [
   new Map(canteen.lines.map(line => [line.id, line]))
 ]))
 
-// ROUTES
+// ROUTES FACTORY
 
-const router = express.Router()
+module.exports = (cache) => {
+  const router = express.Router()
 
-router.get('/', async (req, res, next) => {
-  res.status(200).json({ success: true, data: canteens })
-})
+  router.get('/', async (req, res, next) => {
+    res.status(200).json({ success: true, data: canteens })
+  })
 
-router.get('/:canteenId', async (req, res, next) => {
-  const canteen = CANTEENS_BY_ID.get(req.params.canteenId)
-  if (!canteen) {
-    res.status(404).json({ success: false, error: 'canteen not found' })
-    return
-  }
-  res.status(200).json({ success: true, data: canteen })
-})
+  router.get('/:canteenId', async (req, res, next) => {
+    const canteen = CANTEENS_BY_ID.get(req.params.canteenId)
+    if (!canteen) {
+      res.status(404).json({ success: false, error: 'canteen not found' })
+      return
+    }
+    res.status(200).json({ success: true, data: canteen })
+  })
 
-router.get('/:canteenId/lines', async (req, res, next) => {
-  const canteen = CANTEENS_BY_ID.get(req.params.canteenId)
-  if (!canteen) {
-    res.status(404).json({ success: false, error: 'canteen not found' })
-    return
-  }
-  res.status(200).json({ success: true, data: canteen.lines })
-})
+  router.get('/:canteenId/lines', async (req, res, next) => {
+    const canteen = CANTEENS_BY_ID.get(req.params.canteenId)
+    if (!canteen) {
+      res.status(404).json({ success: false, error: 'canteen not found' })
+      return
+    }
+    res.status(200).json({ success: true, data: canteen.lines })
+  })
 
-router.get('/:canteenId/lines/:lineId', async (req, res, next) => {
-  const linesMap = CANTEEN_LINES_BY_ID.get(req.params.canteenId)
-  if (!linesMap) {
-    res.status(404).json({ success: false, error: 'canteen not found' })
-    return
-  }
-  const line = linesMap.get(req.params.lineId)
-  if (!line) {
-    res.status(404).json({ success: false, error: 'line not found' })
-    return
-  }
-  res.status(200).json({ success: true, data: line })
-})
+  router.get('/:canteenId/lines/:lineId', async (req, res, next) => {
+    const linesMap = CANTEEN_LINES_BY_ID.get(req.params.canteenId)
+    if (!linesMap) {
+      res.status(404).json({ success: false, error: 'canteen not found' })
+      return
+    }
+    const line = linesMap.get(req.params.lineId)
+    if (!line) {
+      res.status(404).json({ success: false, error: 'line not found' })
+      return
+    }
+    res.status(200).json({ success: true, data: line })
+  })
 
-// EXPORTS
-
-module.exports = router
+  return router
+}
