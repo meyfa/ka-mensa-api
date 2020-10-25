@@ -44,15 +44,15 @@ module.exports = {
     interval: '6 hours',
     /**
      * The data source to be used by the fetch job.
-     * Either 'handicap' (the default) or 'jsonapi' (more reliable, but slightly
+     * Either 'simplesite' (the default) or 'jsonapi' (more reliable, but slightly
      * different output and requires authentication).
      *
      * @type {string}
      */
-    source: 'handicap',
-    handicapOptions: {
+    source: 'simplesite',
+    simplesiteOptions: {
       /**
-       * How many days into the future to fetch when using the handicap source.
+       * How many days into the future to fetch when using the simplesite source.
        *
        * @type {number}
        */

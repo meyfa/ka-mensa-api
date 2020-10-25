@@ -44,10 +44,10 @@ You might want to change the plan fetch source. This will not impact
 ka-mensa-api's behavior but only how it retrieves its data.
 There are two options available:
 
-- `'handicap'` (the default)
+- `'simplesite'` (the default)
 - `'jsonapi'`
 
-The handicap source fetches plans from the Studierendenwerk's website, which
+The simplesite source fetches plans from the Studierendenwerk's website, which
 offers a view for the visually impaired that is quite easy to parse. It allows
 for fetching plans far into the future and is relatively stable. That said, this
 still breaks sometimes, e.g. when the Studierendenwerk renames lines or takes
