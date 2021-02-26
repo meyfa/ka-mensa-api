@@ -26,7 +26,7 @@ The entire project is written in JavaScript and is composed as follows:
     responsive interface with filtering and color-coding capabilities
 
 
-## Setup
+## Setup (standard)
 
 ### Prerequisites
 
@@ -65,6 +65,29 @@ and auth requirements.
 To start the server, run `npm start`. It will immediately fetch the most recent
 set of plans, then listen for API requests. Plan polling will continue
 indefinitely with the interval set in `config.js`.
+
+
+## Setup with Docker
+
+This project is available as a Docker image! See also [https://hub.docker.com/r/meyfa/ka-mensa-api](https://hub.docker.com/r/meyfa/ka-mensa-api).
+
+If you just want to get going:
+
+```sh
+docker run --name mensa -p <host-port>:8080 -d meyfa/ka-mensa-api
+```
+
+If you would like to put the cache in a volume (highly recommended!) so it has
+enough room to grow, is available after restarting the container and/or can be
+accessed from the host: Mount to `/usr/src/app/cache` like so:
+
+```sh
+docker run \
+        --name mensa \
+        -p <host-port>:8080 \
+        -v /path/on/host:/usr/src/app/cache \
+        -d meyfa/ka-mensa-api
+```
 
 
 ## Development
