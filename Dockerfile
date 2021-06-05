@@ -1,9 +1,9 @@
-FROM node:latest
+FROM node:lts-alpine
 WORKDIR /usr/src/app
 
 # dependencies
 COPY package*.json ./
-RUN npm install
+RUN npm ci
 
 # app source
 COPY . .
