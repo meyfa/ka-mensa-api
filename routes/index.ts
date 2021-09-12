@@ -1,4 +1,4 @@
-import express from 'express'
+import { Router } from 'express'
 
 import { Cache } from '../lib/cache'
 
@@ -11,10 +11,10 @@ import { plansRoute } from './plans'
  * Create the router that combines all other routes.
  *
  * @param {Cache} cache The cache object.
- * @returns {express.Router} The router object.
+ * @returns {Router} The router object.
  */
-export function indexRoute (cache: Cache): express.Router {
-  const router = express.Router()
+export function indexRoute (cache: Cache): Router {
+  const router = Router()
 
   router.use('/', defaultRoute(cache))
   router.use('/meta', metaRoute(cache))

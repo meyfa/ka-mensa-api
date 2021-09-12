@@ -1,4 +1,4 @@
-import express from 'express'
+import { Request, Response, Router } from 'express'
 
 import canteens from 'ka-mensa-fetch/data/canteens.json'
 
@@ -53,20 +53,20 @@ function parseCommaFilter (str: string, allowedValues: string[]): string[] | und
  * Create the router for retrieving plan information.
  *
  * @param {Cache} cache The cache object.
- * @returns {express.Router} The router object.
+ * @returns {Router} The router object.
  */
-export function plansRoute (cache: Cache): express.Router {
-  const router = express.Router()
+export function plansRoute (cache: Cache): Router {
+  const router = Router()
 
   // eslint-disable-next-line @typescript-eslint/no-misused-promises
-  router.get('/', async (req, res) => {
+  router.get('/', async (req: Request, res: Response) => {
     const dates = await cache.list()
     const results = dates.map(date => ({ date }))
     res.status(200).json({ success: true, data: results })
   })
 
   // eslint-disable-next-line @typescript-eslint/no-misused-promises
-  router.get('/:date(\\d{4}-\\d{2}-\\d{2})', async (req, res) => {
+  router.get('/:date(\\d{4}-\\d{2}-\\d{2})', async (req: Request, res: Response) => {
     const dateObj = parseDate(req.params.date)
     if (dateObj == null) {
       res.status(400).json({ success: false, error: 'malformed date' })

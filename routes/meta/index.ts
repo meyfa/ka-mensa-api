@@ -1,4 +1,4 @@
-import express from 'express'
+import { Router } from 'express'
 
 import { Cache } from '../../lib/cache'
 import { legendRoute } from './legend'
@@ -7,10 +7,10 @@ import { legendRoute } from './legend'
  * Create the router that combines meta information routes.
  *
  * @param {Cache} cache The cache object.
- * @returns {express.Router} The router object.
+ * @returns {Router} The router object.
  */
-export function metaRoute (cache: Cache): express.Router {
-  const router = express.Router()
+export function metaRoute (cache: Cache): Router {
+  const router = Router()
 
   router.use('/legend', legendRoute(cache))
 

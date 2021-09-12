@@ -1,4 +1,4 @@
-import express from 'express'
+import { Request, Response, Router } from 'express'
 
 import canteens from 'ka-mensa-fetch/data/canteens.json'
 
@@ -29,16 +29,16 @@ const CANTEEN_LINES_BY_ID = new Map(canteens.map(canteen => [
  * Create the router for retrieving canteen information.
  *
  * @param {Cache} cache The cache object.
- * @returns {express.Router} The router object.
+ * @returns {Router} The router object.
  */
-export function canteensRoute (cache: Cache): express.Router {
-  const router = express.Router()
+export function canteensRoute (cache: Cache): Router {
+  const router = Router()
 
-  router.get('/', (req, res) => {
+  router.get('/', (req: Request, res: Response) => {
     res.status(200).json({ success: true, data: canteens })
   })
 
-  router.get('/:canteenId', (req, res) => {
+  router.get('/:canteenId', (req: Request, res: Response) => {
     const canteen = CANTEENS_BY_ID.get(req.params.canteenId)
     if (canteen == null) {
       res.status(404).json({ success: false, error: 'canteen not found' })
@@ -47,7 +47,7 @@ export function canteensRoute (cache: Cache): express.Router {
     res.status(200).json({ success: true, data: canteen })
   })
 
-  router.get('/:canteenId/lines', (req, res) => {
+  router.get('/:canteenId/lines', (req: Request, res: Response) => {
     const canteen = CANTEENS_BY_ID.get(req.params.canteenId)
     if (canteen == null) {
       res.status(404).json({ success: false, error: 'canteen not found' })
@@ -56,7 +56,7 @@ export function canteensRoute (cache: Cache): express.Router {
     res.status(200).json({ success: true, data: canteen.lines })
   })
 
-  router.get('/:canteenId/lines/:lineId', (req, res) => {
+  router.get('/:canteenId/lines/:lineId', (req: Request, res: Response) => {
     const linesMap = CANTEEN_LINES_BY_ID.get(req.params.canteenId)
     if (linesMap == null) {
       res.status(404).json({ success: false, error: 'canteen not found' })
