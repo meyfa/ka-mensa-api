@@ -1,0 +1,56 @@
+import winston from 'winston'
+import express from 'express'
+import ms from 'ms'
+import { DirectoryAdapter } from 'fs-adapters'
+
+import config from './config'
+import { Cache } from './lib/cache'
+import { runFetchJob } from './lib/job'
+import { indexRoute } from './routes'
+
+// LOG
+
+const logger = winston.createLogger({
+  level: 'info',
+  format: winston.format.combine(
+    winston.format.timestamp(),
+    winston.format.printf((info) => {
+      const { timestamp, level, message } = info as { timestamp: string, level: string, message: string }
+      return `${timestamp} ${level}: ${message}`
+    })
+  ),
+  transports: [
+    new winston.transports.Console()
+  ]
+})
+
+// STARTUP ROUTINE
+
+/**
+ * Start the server.
+ */
+async function start (): Promise<void> {
+  const fsAdapter = new DirectoryAdapter(config.cache.directory)
+  await fsAdapter.init()
+
+  const cache = new Cache(fsAdapter)
+
+  // setup fetch job
+  const fetchInterval = ms(config.fetchJob.interval)
+  await runFetchJob(cache, logger)
+  setInterval(() => runFetchJob(cache, logger) as any, fetchInterval)
+
+  // setup server and routes
+  const app = express()
+  app.use(config.server.base, indexRoute(cache))
+
+  // listen
+  const port = config.server.port
+  const host = config.server.host
+  app.listen(port, host, () => {
+    logger.log('info', `server listening on :${port}`)
+  })
+}
+
+// eslint-disable-next-line @typescript-eslint/no-floating-promises
+start()

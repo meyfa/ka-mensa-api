@@ -1,13 +1,13 @@
-'use strict'
+import { fetchMensa, CanteenPlan, DateSpec } from 'ka-mensa-fetch'
+import { Logger } from 'winston'
+import { group } from 'group-items'
+import moment from 'moment'
+import ms from 'ms'
 
-const { fetchMensa } = require('ka-mensa-fetch')
-const { group } = require('group-items')
-const moment = require('moment')
-const ms = require('ms')
+import config from '../config'
 
-const config = require('../config')
-
-const getSessionCookie = require('./get-session-cookie')
+import { getSessionCookie } from './get-session-cookie'
+import { Cache } from './cache'
 
 // CONSTANTS
 
@@ -34,7 +34,7 @@ const PLAN_AGE_MAXIMUM = ms('10d')
  * @param {number} dayCount The number of dates after today to also include.
  * @returns {object[]} The array of date objects.
  */
-function getFetchDates (dayCount) {
+function getFetchDates (dayCount: number): DateSpec[] {
   const dates = []
   for (let i = 0, date = moment(); i <= dayCount; ++i) {
     dates.push({
@@ -53,7 +53,7 @@ function getFetchDates (dayCount) {
  *
  * @returns {Promise} Resolves to the fetched plan set.
  */
-async function fetchFromSimpleSite () {
+async function fetchFromSimpleSite (): Promise<CanteenPlan[]> {
   const dayCount = Math.max(config.fetchJob.simplesiteOptions.futureDays, 0)
   const dates = getFetchDates(dayCount)
   const sessionCookie = await getSessionCookie()
@@ -66,7 +66,7 @@ async function fetchFromSimpleSite () {
  *
  * @returns {Promise} Resolves to the fetched plan set.
  */
-async function fetchFromJsonApi () {
+async function fetchFromJsonApi (): Promise<CanteenPlan[]> {
   return fetchMensa('jsonapi', {
     auth: {
       user: config.fetchJob.jsonapiOptions.auth.user,
@@ -82,12 +82,12 @@ async function fetchFromJsonApi () {
  * @param {string} source The source to use ('simplesite' / 'jsonapi').
  * @returns {Promise} Resolves to the fetched plan set.
  */
-async function fetchFromSource (source) {
+async function fetchFromSource (source: string): Promise<CanteenPlan[]> {
   switch (source) {
     case 'jsonapi':
-      return fetchFromJsonApi()
+      return await fetchFromJsonApi()
     case 'simplesite':
-      return fetchFromSimpleSite()
+      return await fetchFromSimpleSite()
   }
   throw new Error('invalid source setting')
 }
@@ -105,7 +105,7 @@ async function fetchFromSource (source) {
  * @param {object} logger The logger instance.
  * @returns {void}
  */
-async function run (cache, logger) {
+export async function runFetchJob (cache: Cache, logger: Logger): Promise<void> {
   const source = config.fetchJob.source
   logger.log('info', 'fetching plans (source=' + source + ')')
 
@@ -123,13 +123,11 @@ async function run (cache, logger) {
   for (const [date, plansForDate] of group(plans).by('date').asTuples()) {
     // check for invalid date
     if (now.diff(date) > PLAN_AGE_MAXIMUM) {
-      const formattedDate = moment(date).format('YYYY-MM-DD')
+      const formattedDate: string = moment(date).format('YYYY-MM-DD')
       logger.log('warn', 'fetched a plan from ' + formattedDate + ' that was not stored due to its age')
       continue
     }
 
-    cache.put(date, plansForDate)
+    await cache.put(date, plansForDate)
   }
 }
-
-module.exports = run

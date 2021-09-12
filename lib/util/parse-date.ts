@@ -1,6 +1,4 @@
-'use strict'
-
-const moment = require('moment')
+import moment from 'moment'
 
 // CONSTANTS
 
@@ -19,17 +17,15 @@ const DATE_FORMAT = 'YYYY-MM-DD'
  * @param {string} str The date string.
  * @returns {object} The parse result.
  */
-function parseDate (str) {
+export function parseDate (str: string): { year: number, month: number, day: number } | undefined {
   const strict = true
   const date = moment(str, DATE_FORMAT, strict)
-  if (date.isValid()) {
+  if (date.isValid() as boolean) {
     return {
       year: date.year(),
       month: date.month(),
       day: date.date()
     }
   }
-  return null
+  return undefined
 }
-
-module.exports = parseDate

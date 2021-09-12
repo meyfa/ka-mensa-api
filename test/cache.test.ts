@@ -1,28 +1,25 @@
-'use strict'
+import { Cache } from '../lib/cache'
+import { MemoryAdapter } from 'fs-adapters'
 
-const chai = require('chai')
-chai.use(require('chai-as-promised'))
-const { expect } = chai
+import chai, { expect } from 'chai'
+import chaiAsPromised from 'chai-as-promised'
+chai.use(chaiAsPromised)
 
-const { MemoryAdapter } = require('fs-adapters')
-
-const Cache = require('../lib/cache.js')
-
-describe('cache.js', function () {
+describe('cache.ts', function () {
   describe('#get()', function () {
-    it('resolves to null for missing files', function () {
+    it('resolves to undefined for missing files', function () {
       const adapter = new MemoryAdapter()
       const cache = new Cache(adapter)
       const date = { year: 2020, month: 8, day: 7 }
-      return expect(cache.get(date)).to.eventually.be.null
+      return expect(cache.get(date)).to.eventually.be.undefined
     })
 
-    it('resolves to null repeatedly', function () {
+    it('resolves to undefined repeatedly', function () {
       const adapter = new MemoryAdapter()
       const cache = new Cache(adapter)
       const date = { year: 2020, month: 8, day: 7 }
       return expect(cache.get(date)).to.eventually.be.fulfilled.then(() => {
-        return expect(cache.get(date)).to.eventually.be.null
+        return expect(cache.get(date)).to.eventually.be.undefined
       })
     })
 
@@ -52,7 +49,13 @@ describe('cache.js', function () {
       const adapter = new MemoryAdapter()
       const cache = new Cache(adapter)
       const date = { year: 2020, month: 8, day: 7 }
-      return expect(cache.put(date, [{ foo: 'bar' }])).to.eventually.be.fulfilled.then(() => {
+      const plan = {
+        id: 'foo',
+        name: 'Foo',
+        date: { year: 2021, month: 6, day: 7 },
+        lines: []
+      }
+      return expect(cache.put(date, [plan])).to.eventually.be.fulfilled.then(() => {
         return expect(adapter.listFiles()).to.eventually.have.members(['2020-09-07.json'])
       })
     })
@@ -61,9 +64,15 @@ describe('cache.js', function () {
       const adapter = new MemoryAdapter()
       const cache = new Cache(adapter)
       const date = { year: 2020, month: 8, day: 7 }
-      return expect(cache.put(date, [{ foo: 'bar' }])).to.eventually.be.fulfilled.then(() => {
+      const plan = {
+        id: 'foo',
+        name: 'Foo',
+        date: { year: 2021, month: 6, day: 7 },
+        lines: []
+      }
+      return expect(cache.put(date, [plan])).to.eventually.be.fulfilled.then(() => {
         return expect(adapter.read('2020-09-07.json', { encoding: 'utf8' }))
-          .to.eventually.equal('[{"foo":"bar"}]')
+          .to.eventually.equal('[{"id":"foo","name":"Foo","date":{"year":2021,"month":6,"day":7},"lines":[]}]')
       })
     })
 
@@ -71,10 +80,15 @@ describe('cache.js', function () {
       const adapter = new MemoryAdapter()
       const cache = new Cache(adapter)
       const date = { year: 2020, month: 8, day: 7 }
-      const contents = [{ foo: 'bar' }]
+      const contents = [{
+        id: 'foo',
+        name: 'Foo',
+        date: { year: 2021, month: 6, day: 7 },
+        lines: []
+      }]
       // the next line is important, to also trigger cases where absence state
       // has been memorized
-      return expect(cache.get(date)).to.eventually.be.null.then(() => {
+      return expect(cache.get(date)).to.eventually.be.undefined.then(() => {
         return expect(cache.put(date, contents)).to.eventually.be.fulfilled
       }).then(() => {
         return expect(cache.get(date)).to.eventually.deep.equal(contents)

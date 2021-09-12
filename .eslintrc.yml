@@ -1,9 +1,12 @@
 extends:
-  - standard
-  - "plugin:jsdoc/recommended"
+  - 'standard-with-typescript'
+  - 'plugin:jsdoc/recommended'
+
+parserOptions:
+  project: './tsconfig.eslint.json'
 
 overrides:
-  - files: "*.test.js"
+  - files: '*.test.js'
     env:
       mocha: true
     rules:

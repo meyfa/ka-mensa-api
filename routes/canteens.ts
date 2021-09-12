@@ -1,8 +1,8 @@
-'use strict'
+import { Request, Response, Router } from 'express'
 
-const express = require('express')
+import canteens from 'ka-mensa-fetch/data/canteens.json'
 
-const canteens = require('ka-mensa-fetch/data/canteens.json')
+import { Cache } from '../lib/cache'
 
 // CONSTANTS
 
@@ -25,39 +25,45 @@ const CANTEEN_LINES_BY_ID = new Map(canteens.map(canteen => [
 
 // ROUTES FACTORY
 
-module.exports = (cache) => {
-  const router = express.Router()
+/**
+ * Create the router for retrieving canteen information.
+ *
+ * @param {Cache} cache The cache object.
+ * @returns {Router} The router object.
+ */
+export function canteensRoute (cache: Cache): Router {
+  const router = Router()
 
-  router.get('/', async (req, res, next) => {
+  router.get('/', (req: Request, res: Response) => {
     res.status(200).json({ success: true, data: canteens })
   })
 
-  router.get('/:canteenId', async (req, res, next) => {
+  router.get('/:canteenId', (req: Request, res: Response) => {
     const canteen = CANTEENS_BY_ID.get(req.params.canteenId)
-    if (!canteen) {
+    if (canteen == null) {
       res.status(404).json({ success: false, error: 'canteen not found' })
       return
     }
     res.status(200).json({ success: true, data: canteen })
   })
 
-  router.get('/:canteenId/lines', async (req, res, next) => {
+  router.get('/:canteenId/lines', (req: Request, res: Response) => {
     const canteen = CANTEENS_BY_ID.get(req.params.canteenId)
-    if (!canteen) {
+    if (canteen == null) {
       res.status(404).json({ success: false, error: 'canteen not found' })
       return
     }
     res.status(200).json({ success: true, data: canteen.lines })
   })
 
-  router.get('/:canteenId/lines/:lineId', async (req, res, next) => {
+  router.get('/:canteenId/lines/:lineId', (req: Request, res: Response) => {
     const linesMap = CANTEEN_LINES_BY_ID.get(req.params.canteenId)
-    if (!linesMap) {
+    if (linesMap == null) {
       res.status(404).json({ success: false, error: 'canteen not found' })
       return
     }
     const line = linesMap.get(req.params.lineId)
-    if (!line) {
+    if (line == null) {
       res.status(404).json({ success: false, error: 'line not found' })
       return
     }
