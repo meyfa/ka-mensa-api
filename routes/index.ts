@@ -6,6 +6,8 @@ import { defaultRoute } from './default'
 import { metaRoute } from './meta'
 import { canteensRoute } from './canteens'
 import { plansRoute } from './plans'
+import { createHandler } from '../lib/create-handler'
+import { NotFoundError } from '../lib/errors'
 
 /**
  * Create the router that combines all other routes.
@@ -20,6 +22,11 @@ export function indexRoute (cache: Cache): Router {
   router.use('/meta', metaRoute(cache))
   router.use('/canteens', canteensRoute(cache))
   router.use('/plans', plansRoute(cache))
+
+  // 404 fallback
+  router.use(createHandler(() => {
+    throw new NotFoundError('resource')
+  }))
 
   return router
 }
