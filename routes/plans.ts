@@ -15,8 +15,8 @@ const CANTEEN_IDS = canteens.map(({ id }) => id)
 /**
  * Map the raw plan data into a presentable format.
  *
- * @param {object} raw The plan data.
- * @returns {object} The mapped plan.
+ * @param raw The plan data.
+ * @returns The mapped plan.
  */
 function mapPlan (raw: CanteenPlan): Record<string, any> {
   return {
@@ -35,9 +35,9 @@ function mapPlan (raw: CanteenPlan): Record<string, any> {
  * Convert a comma-delimited string into an array of unique entries,
  * which must all be contained in the set of allowed values.
  *
- * @param {string} str The string to parse (e,g, 'foo,bar')
- * @param {string[]} allowedValues The allowed set (e.g. ['foo', 'bar']).
- * @returns {string[] | undefined} The entries, or undefined if parsing failed.
+ * @param str The string to parse (e,g, 'foo,bar')
+ * @param allowedValues The allowed set (e.g. ['foo', 'bar']).
+ * @returns The entries, or undefined if parsing failed.
  */
 function parseCommaFilter (str: string, allowedValues: string[]): string[] | undefined {
   if (str == null || str.length === 0) {
@@ -52,8 +52,8 @@ function parseCommaFilter (str: string, allowedValues: string[]): string[] | und
 /**
  * Create the router for retrieving plan information.
  *
- * @param {Cache} cache The cache object.
- * @returns {Router} The router object.
+ * @param cache The cache object.
+ * @returns The router object.
  */
 export function plansRoute (cache: Cache): Router {
   const router = Router()

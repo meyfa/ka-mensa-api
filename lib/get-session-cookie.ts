@@ -5,8 +5,6 @@ import ms from 'ms'
 
 /**
  * Session cookie lifetime duration, i.e. time before requesting another.
- *
- * @type {number}
  */
 // The cookie is assumed to live for at least 30 minutes
 const COOKIE_TIMEOUT = ms('29min')
@@ -23,7 +21,7 @@ let cookieTime = 0
  * return a cached cookie when available, but if no cookie is available yet or
  * it has reached its lifetime, a fresh cookie will be requested instead.
  *
- * @returns {Promise} Resolves to a cookie value.
+ * @returns Resolves to a cookie value.
  */
 export async function getSessionCookie (): Promise<string | undefined> {
   if (Date.now() - cookieTime < COOKIE_TIMEOUT) {

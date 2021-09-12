@@ -7,8 +7,8 @@ import { Cache } from '../../lib/cache'
 /**
  * Create the router for retrieving legend meta information.
  *
- * @param {Cache} cache The cache object.
- * @returns {Router} The router object.
+ * @param cache The cache object.
+ * @returns The router object.
  */
 export function legendRoute (cache: Cache): Router {
   const router = Router()

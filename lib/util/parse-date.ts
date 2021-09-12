@@ -1,11 +1,10 @@
 import moment from 'moment'
+import { DateSpec } from 'ka-mensa-fetch'
 
 // CONSTANTS
 
 /**
  * The date format that is used.
- *
- * @type {string}
  */
 const DATE_FORMAT = 'YYYY-MM-DD'
 
@@ -14,10 +13,10 @@ const DATE_FORMAT = 'YYYY-MM-DD'
 /**
  * Parse the given date string into a date object.
  *
- * @param {string} str The date string.
- * @returns {object} The parse result.
+ * @param str The date string.
+ * @returns The parse result.
  */
-export function parseDate (str: string): { year: number, month: number, day: number } | undefined {
+export function parseDate (str: string): DateSpec | undefined {
   const strict = true
   const date = moment(str, DATE_FORMAT, strict)
   if (date.isValid() as boolean) {

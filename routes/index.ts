@@ -10,8 +10,8 @@ import { plansRoute } from './plans'
 /**
  * Create the router that combines all other routes.
  *
- * @param {Cache} cache The cache object.
- * @returns {Router} The router object.
+ * @param cache The cache object.
+ * @returns The router object.
  */
 export function indexRoute (cache: Cache): Router {
   const router = Router()
