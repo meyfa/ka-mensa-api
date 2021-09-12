@@ -1,6 +1,7 @@
-import { Request, Response, Router } from 'express'
+import { Router } from 'express'
 
 import { Cache } from '../lib/cache'
+import { createHandler } from '../lib/create-handler'
 
 /**
  * Create the router for retrieving API status information.
@@ -10,10 +11,6 @@ import { Cache } from '../lib/cache'
  */
 export function defaultRoute (cache: Cache): Router {
   const router = Router()
-
-  router.get('/', (req: Request, res: Response) => {
-    res.status(200).json({ success: true, data: {} })
-  })
-
+  router.get('/', createHandler(() => ({})))
   return router
 }

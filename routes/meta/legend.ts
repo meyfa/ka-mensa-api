@@ -1,8 +1,8 @@
-import { Request, Response, Router } from 'express'
-
-import legend from 'ka-mensa-fetch/data/legend.json'
+import { Router } from 'express'
 
 import { Cache } from '../../lib/cache'
+import { LegendController } from '../../controllers/legend-controller'
+import { createHandler } from '../../lib/create-handler'
 
 /**
  * Create the router for retrieving legend meta information.
@@ -11,11 +11,11 @@ import { Cache } from '../../lib/cache'
  * @returns The router object.
  */
 export function legendRoute (cache: Cache): Router {
+  const controller = new LegendController()
+
   const router = Router()
 
-  router.get('/', (req: Request, res: Response) => {
-    res.status(200).json({ success: true, data: legend })
-  })
+  router.get('/', createHandler(async () => await controller.getLegend()))
 
   return router
 }

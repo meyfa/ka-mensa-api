@@ -1,4 +1,3 @@
-import winston from 'winston'
 import express from 'express'
 import ms from 'ms'
 import { DirectoryAdapter } from 'fs-adapters'
@@ -7,24 +6,7 @@ import config from './config'
 import { Cache } from './lib/cache'
 import { runFetchJob } from './lib/job'
 import { indexRoute } from './routes'
-
-// LOG
-
-const logger = winston.createLogger({
-  level: 'info',
-  format: winston.format.combine(
-    winston.format.timestamp(),
-    winston.format.printf((info) => {
-      const { timestamp, level, message } = info as { timestamp: string, level: string, message: string }
-      return `${timestamp} ${level}: ${message}`
-    })
-  ),
-  transports: [
-    new winston.transports.Console()
-  ]
-})
-
-// STARTUP ROUTINE
+import { logger } from './logger'
 
 /**
  * Start the server.
@@ -37,8 +19,8 @@ async function start (): Promise<void> {
 
   // setup fetch job
   const fetchInterval = ms(config.fetchJob.interval)
-  await runFetchJob(cache, logger)
-  setInterval(() => runFetchJob(cache, logger) as any, fetchInterval)
+  await runFetchJob(cache)
+  setInterval(() => runFetchJob(cache) as any, fetchInterval)
 
   // setup server and routes
   const app = express()

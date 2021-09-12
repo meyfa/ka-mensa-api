@@ -1,23 +1,8 @@
-import { Request, Response, Router } from 'express'
-
-import canteens from 'ka-mensa-fetch/data/canteens.json'
+import { Request, Router } from 'express'
 
 import { Cache } from '../lib/cache'
-
-// CONSTANTS
-
-/**
- * A map: canteen id -> canteen object.
- */
-const CANTEENS_BY_ID = new Map(canteens.map(canteen => [canteen.id, canteen]))
-
-/**
- * A map: canteen id -> (map: line id -> line object).
- */
-const CANTEEN_LINES_BY_ID = new Map(canteens.map(canteen => [
-  canteen.id,
-  new Map(canteen.lines.map(line => [line.id, line]))
-]))
+import { CanteensController } from '../controllers/canteens-controller'
+import { createHandler } from '../lib/create-handler'
 
 // ROUTES FACTORY
 
@@ -28,43 +13,23 @@ const CANTEEN_LINES_BY_ID = new Map(canteens.map(canteen => [
  * @returns The router object.
  */
 export function canteensRoute (cache: Cache): Router {
+  const controller = new CanteensController()
+
   const router = Router()
 
-  router.get('/', (req: Request, res: Response) => {
-    res.status(200).json({ success: true, data: canteens })
-  })
+  router.get('/', createHandler(async () => await controller.getAll()))
 
-  router.get('/:canteenId', (req: Request, res: Response) => {
-    const canteen = CANTEENS_BY_ID.get(req.params.canteenId)
-    if (canteen == null) {
-      res.status(404).json({ success: false, error: 'canteen not found' })
-      return
-    }
-    res.status(200).json({ success: true, data: canteen })
-  })
+  router.get('/:canteenId', createHandler(async (req: Request) => {
+    return await controller.getOne(req.params.canteenId)
+  }))
 
-  router.get('/:canteenId/lines', (req: Request, res: Response) => {
-    const canteen = CANTEENS_BY_ID.get(req.params.canteenId)
-    if (canteen == null) {
-      res.status(404).json({ success: false, error: 'canteen not found' })
-      return
-    }
-    res.status(200).json({ success: true, data: canteen.lines })
-  })
+  router.get('/:canteenId/lines', createHandler(async (req: Request) => {
+    return await controller.getLines(req.params.canteenId)
+  }))
 
-  router.get('/:canteenId/lines/:lineId', (req: Request, res: Response) => {
-    const linesMap = CANTEEN_LINES_BY_ID.get(req.params.canteenId)
-    if (linesMap == null) {
-      res.status(404).json({ success: false, error: 'canteen not found' })
-      return
-    }
-    const line = linesMap.get(req.params.lineId)
-    if (line == null) {
-      res.status(404).json({ success: false, error: 'line not found' })
-      return
-    }
-    res.status(200).json({ success: true, data: line })
-  })
+  router.get('/:canteenId/lines/:lineId', createHandler(async (req: Request) => {
+    return await controller.getLine(req.params.canteenId, req.params.lineId)
+  }))
 
   return router
 }
