@@ -2,7 +2,7 @@ import { Request, Router } from 'express'
 
 import { Cache } from '../lib/cache'
 import { CanteensController } from '../controllers/canteens-controller'
-import { createHandler } from '../lib/controller-handler'
+import { createHandler } from '../lib/create-handler'
 
 // ROUTES FACTORY
 

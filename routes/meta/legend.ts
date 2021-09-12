@@ -2,7 +2,7 @@ import { Router } from 'express'
 
 import { Cache } from '../../lib/cache'
 import { LegendController } from '../../controllers/legend-controller'
-import { createHandler } from '../../lib/controller-handler'
+import { createHandler } from '../../lib/create-handler'
 
 /**
  * Create the router for retrieving legend meta information.

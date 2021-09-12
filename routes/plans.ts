@@ -6,7 +6,7 @@ import canteens from 'ka-mensa-fetch/data/canteens.json'
 import { Cache } from '../lib/cache'
 import { parseDate } from '../lib/util/parse-date'
 import { PlansController } from '../controllers/plans-controller'
-import { createHandler } from '../lib/controller-handler'
+import { createHandler } from '../lib/create-handler'
 import { BadRequestError } from '../lib/errors'
 import { parseCommaFilter } from '../lib/util/parse-comma-filter'
 
