@@ -12,4 +12,4 @@ COPY . .
 EXPOSE 8080
 
 # start command - same as in package.json
-CMD ["node", "server.js"]
+CMD ["npm", "start"]

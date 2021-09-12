@@ -1,8 +1,6 @@
-'use strict'
+import path from 'path'
 
-const path = require('path')
-
-module.exports = {
+export default {
   server: {
     /**
      * Address to listen on, e.g. :: (or 0.0.0.0) for all addresses,
@@ -32,7 +30,7 @@ module.exports = {
      *
      * @type {string}
      */
-    directory: path.join(__dirname, './cache')
+    directory: path.join(process.cwd(), './cache')
   },
 
   fetchJob: {

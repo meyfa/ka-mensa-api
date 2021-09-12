@@ -36,7 +36,7 @@ somewhere and run `npm install` to load dependencies.
 
 ### Configuration
 
-Open up `config.js` and configure to your liking. Notice that network options
+Open up `config.ts` and configure to your liking. Notice that network options
 are rather limited. If you want HTTPS support, CORS headers or advanced
 embedding into existing domain structures, you will need to set up a reverse
 proxy like nginx.
@@ -65,7 +65,7 @@ and auth requirements.
 
 To start the server, run `npm start`. It will immediately fetch the most recent
 set of plans, then listen for API requests. Plan polling will continue
-indefinitely with the interval set in `config.js`.
+indefinitely with the interval set in `config.ts`.
 
 
 ## Setup with Docker
