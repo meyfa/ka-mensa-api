@@ -8,8 +8,6 @@ import { CanteenPlan, DateSpec } from 'ka-mensa-fetch'
 
 /**
  * ENOENT error code.
- *
- * @type {string}
  */
 const ENOENT = 'ENOENT'
 
@@ -18,8 +16,8 @@ const ENOENT = 'ENOENT'
 /**
  * Build the file name from the given date object.
  *
- * @param {object} date The date object.
- * @returns {string} The file name.
+ * @param date The date object.
+ * @returns The file name.
  */
 function buildFileName (date: DateSpec): string {
   const formattedDate = moment(date).format('YYYY-MM-DD') as string
@@ -28,13 +26,16 @@ function buildFileName (date: DateSpec): string {
 
 // EXPORTS
 
+/**
+ * A cache directory manager, providing retrieval and insertion of canteen plans.
+ */
 export class Cache {
   private readonly fsAdapter: Adapter
 
   /**
    * Construct a new Cache with the specified file system adapter.
    *
-   * @param {object} fsAdapter The I/O interface.
+   * @param fsAdapter The I/O interface.
    */
   constructor (fsAdapter: Adapter) {
     this.fsAdapter = fsAdapter
@@ -45,8 +46,8 @@ export class Cache {
    *
    * If the cache does not contain data for the given date, returns undefined.
    *
-   * @param {object} date The date object.
-   * @returns {Promise} Resolves to the cache contents, or undefined if not cached.
+   * @param date The date object.
+   * @returns Resolves to the cache contents, or undefined if not cached.
    */
   async get (date: DateSpec): Promise<CanteenPlan[] | undefined> {
     const file = buildFileName(date)
@@ -67,9 +68,9 @@ export class Cache {
   /**
    * Insert the contents into the cache for the given date.
    *
-   * @param {object} date The date object.
-   * @param {object[]} contents The cache contents (array of plans for the date).
-   * @returns {Promise} Resolves when done.
+   * @param date The date object.
+   * @param contents The cache contents (array of plans for the date).
+   * @returns Resolves when done.
    */
   async put (date: DateSpec, contents: CanteenPlan[]): Promise<void> {
     const file = buildFileName(date)
@@ -79,7 +80,7 @@ export class Cache {
   /**
    * Obtain a list of all cached plans, in unspecified order.
    *
-   * @returns {Promise} Resolves to an array of date objects.
+   * @returns Resolves to an array of date objects.
    */
   async list (): Promise<DateSpec[]> {
     const files: string[] = await this.fsAdapter.listFiles()

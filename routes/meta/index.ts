@@ -6,8 +6,8 @@ import { legendRoute } from './legend'
 /**
  * Create the router that combines meta information routes.
  *
- * @param {Cache} cache The cache object.
- * @returns {Router} The router object.
+ * @param cache The cache object.
+ * @returns The router object.
  */
 export function metaRoute (cache: Cache): Router {
   const router = Router()

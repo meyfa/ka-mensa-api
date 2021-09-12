@@ -8,15 +8,11 @@ import { Cache } from '../lib/cache'
 
 /**
  * A map: canteen id -> canteen object.
- *
- * @type {Map}
  */
 const CANTEENS_BY_ID = new Map(canteens.map(canteen => [canteen.id, canteen]))
 
 /**
  * A map: canteen id -> (map: line id -> line object).
- *
- * @type {Map}
  */
 const CANTEEN_LINES_BY_ID = new Map(canteens.map(canteen => [
   canteen.id,
@@ -28,8 +24,8 @@ const CANTEEN_LINES_BY_ID = new Map(canteens.map(canteen => [
 /**
  * Create the router for retrieving canteen information.
  *
- * @param {Cache} cache The cache object.
- * @returns {Router} The router object.
+ * @param cache The cache object.
+ * @returns The router object.
  */
 export function canteensRoute (cache: Cache): Router {
   const router = Router()
