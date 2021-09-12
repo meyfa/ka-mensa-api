@@ -1,6 +1,5 @@
 # ka-mensa-api
 
-
 [![CI](https://github.com/meyfa/ka-mensa-api/actions/workflows/main.yml/badge.svg)](https://github.com/meyfa/ka-mensa-api/actions/workflows/main.yml)
 [![Maintainability](https://api.codeclimate.com/v1/badges/9b1f9ce6f3bec49c26a1/maintainability)](https://codeclimate.com/github/meyfa/ka-mensa-api/maintainability)
 
@@ -66,6 +65,10 @@ and auth requirements.
 To start the server, run `npm start`. It will immediately fetch the most recent
 set of plans, then listen for API requests. Plan polling will continue
 indefinitely with the interval set in `config.ts`.
+
+Note that `npm start` is shortcut for `npm run build` followed by `npm run production`,
+where the former compiles the TypeScript code and the latter executes it.
+To start the server without compiling again, use `npm run production` only.
 
 
 ## Setup with Docker

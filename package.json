@@ -5,9 +5,9 @@
   "description": "Karlsruhe (KIT) Mensa API server",
   "main": "dist/server.js",
   "scripts": {
-    "clean": "rimraf dist",
-    "build": "npm run clean && tsc",
-    "start": "npm run build && node dist/server.js",
+    "start": "npm run build && npm run production",
+    "build": "rimraf dist && tsc",
+    "production": "node dist/server.js",
     "lint": "eslint --ignore-path .gitignore .",
     "lint-fix": "eslint --fix --ignore-path .gitignore .",
     "test": "ts-mocha --recursive \"test/**/*.test.*\""
