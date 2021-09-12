@@ -1,5 +1,4 @@
-import { fetchMensa, CanteenPlan, DateSpec } from 'ka-mensa-fetch'
-import { Logger } from 'winston'
+import { CanteenPlan, DateSpec, fetchMensa } from 'ka-mensa-fetch'
 import { group } from 'group-items'
 import moment from 'moment'
 import ms from 'ms'
@@ -8,6 +7,7 @@ import config from '../config'
 
 import { getSessionCookie } from './get-session-cookie'
 import { Cache } from './cache'
+import { logger } from '../logger'
 
 // CONSTANTS
 
@@ -100,9 +100,8 @@ async function fetchFromSource (source: string): Promise<CanteenPlan[]> {
  * there will be no gaps.
  *
  * @param cache The cache instance.
- * @param logger The logger instance.
  */
-export async function runFetchJob (cache: Cache, logger: Logger): Promise<void> {
+export async function runFetchJob (cache: Cache): Promise<void> {
   const source = config.fetchJob.source
   logger.log('info', 'fetching plans (source=' + source + ')')
 
