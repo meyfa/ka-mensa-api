@@ -75,6 +75,8 @@ To start the server without compiling again, use `npm run production` only.
 
 This project is available as a Docker image! See also [https://hub.docker.com/r/meyfa/ka-mensa-api](https://hub.docker.com/r/meyfa/ka-mensa-api).
 
+### Running the Container
+
 If you just want to get going:
 
 ```sh
@@ -92,6 +94,25 @@ docker run \
         -v /path/on/host:/usr/src/app/cache \
         -d meyfa/ka-mensa-api
 ```
+
+### CORS Headers
+
+Perhaps you need to configure CORS for the API server - to enable displaying
+the plans via an instance of `ka-mensa-ui` running on another domain, for
+example. This can be done via the config file or by setting an environment
+variable:
+
+```
+docker run \
+        --name mensa \
+        -p <host-port>:8080 \
+        -v /path/on/host:/usr/src/app/cache \
+        -e API_SERVER_CORS_ALLOWORIGIN=https://example.com \
+        -d meyfa/ka-mensa-api
+```
+
+Specify a regular URL to only allow that one origin. Use `*` to allow all
+origins.
 
 
 ## Development

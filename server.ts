@@ -10,6 +10,19 @@ import { indexRoute } from './routes'
 import { logger } from './logger'
 
 /**
+ * Determine the CORS origin to allow, from either the environment variables or the config.
+ * This function will return a string if and only if the option is set and is not empty.
+ *
+ * @returns The origin value, if it is valid, and undefined otherwise.
+ */
+function getAllowOrigin (): string | undefined {
+  return [
+    process.env.API_SERVER_CORS_ALLOWORIGIN,
+    config.server.cors?.allowOrigin
+  ].find(value => value != null && value !== '')
+}
+
+/**
  * Start the server.
  */
 async function start (): Promise<void> {
@@ -25,10 +38,9 @@ async function start (): Promise<void> {
 
   // setup server and routes
   const app = express()
-  if (config.server.cors?.allowOrigin != null && config.server.cors.allowOrigin !== '') {
-    app.use(cors({
-      origin: config.server.cors.allowOrigin
-    }))
+  const allowOrigin = getAllowOrigin()
+  if (allowOrigin != null) {
+    app.use(cors({ origin: allowOrigin }))
   }
   app.use(config.server.base, indexRoute(cache))
 
