@@ -1,5 +1,6 @@
 import express from 'express'
 import ms from 'ms'
+import cors from 'cors'
 import { DirectoryAdapter } from 'fs-adapters'
 
 import config from './config'
@@ -24,6 +25,11 @@ async function start (): Promise<void> {
 
   // setup server and routes
   const app = express()
+  if (config.server.cors?.allowOrigin != null && config.server.cors.allowOrigin !== '') {
+    app.use(cors({
+      origin: config.server.cors.allowOrigin
+    }))
+  }
   app.use(config.server.base, indexRoute(cache))
 
   // listen

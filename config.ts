@@ -13,9 +13,20 @@ export default {
     port: 8080,
     /**
      * Base path as sent in requests (usually /, but can also be /api etc.).
-     * MUST START AND END WITH SLASH '/'
      */
-    base: '/'
+    base: '/',
+    /**
+     * Cross-Origin settings.
+     */
+    cors: {
+      /**
+       * The domains from which requests can be made to this API
+       * (the Access-Control-Allow-Origin header). Set to '*' to allow any origin,
+       * or set to a single origin such as 'https://example.com'.
+       * A value of '' or null will disallow CORS.
+       */
+      allowOrigin: ''
+    }
   },
 
   cache: {
