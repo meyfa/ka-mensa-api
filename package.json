@@ -8,8 +8,8 @@
     "start": "npm run build && npm run production",
     "build": "rimraf dist && tsc",
     "production": "node dist/server.js",
-    "lint": "eslint --ignore-path .gitignore .",
-    "lint-fix": "eslint --fix --ignore-path .gitignore .",
+    "lint": "eslint --ignore-path .gitignore . && tsc --noEmit",
+    "lint-fix": "eslint --fix --ignore-path .gitignore . && tsc --noEmit",
     "test": "mocha --require ts-node/register --recursive \"test/**/*.test.*\""
   },
   "repository": {
