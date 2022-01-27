@@ -33,7 +33,7 @@
   },
   "dependencies": {
     "cors": "2.8.5",
-    "express": "4.17.1",
+    "express": "4.17.2",
     "fs-adapters": "6.0.2",
     "group-items": "2.0.0",
     "ka-mensa-fetch": "2.1.5",
