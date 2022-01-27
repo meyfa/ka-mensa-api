@@ -39,7 +39,7 @@
     "ka-mensa-fetch": "2.1.5",
     "moment": "2.29.1",
     "ms": "2.1.3",
-    "winston": "3.3.3"
+    "winston": "3.4.0"
   },
   "devDependencies": {
     "@types/chai": "4.3.0",
