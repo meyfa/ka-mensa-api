@@ -1,3 +1,15 @@
-node_modules
-npm-debug.log
-/cache
+# exclude everything
+*
+
+# include what we need
+!LICENSE
+!package.json
+!package-lock.json
+!tsconfig.json
+!tsconfig.eslint.json
+!server.ts
+!logger.ts
+!config.ts
+!routes
+!lib
+!controllers
