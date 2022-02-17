@@ -7,7 +7,7 @@ import config from './config'
 import { Cache } from './lib/cache'
 import { runFetchJob } from './lib/job'
 import { indexRoute } from './routes'
-import { logger } from './logger'
+import { logger } from './lib/logger'
 
 /**
  * Determine the CORS origin to allow, from either the environment variables or the config.
@@ -52,5 +52,4 @@ async function start (): Promise<void> {
   })
 }
 
-// eslint-disable-next-line @typescript-eslint/no-floating-promises
-start()
+void start()

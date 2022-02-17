@@ -19,7 +19,7 @@ const DATE_FORMAT = 'YYYY-MM-DD'
 export function parseDate (str: string): DateSpec | undefined {
   const strict = true
   const date = moment(str, DATE_FORMAT, strict)
-  if (date.isValid() as boolean) {
+  if (date.isValid()) {
     return {
       year: date.year(),
       month: date.month(),
