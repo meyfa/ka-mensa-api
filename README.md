@@ -1,6 +1,7 @@
 # ka-mensa-api
 
 [![CI](https://github.com/meyfa/ka-mensa-api/actions/workflows/main.yml/badge.svg)](https://github.com/meyfa/ka-mensa-api/actions/workflows/main.yml)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/9b1f9ce6f3bec49c26a1/test_coverage)](https://codeclimate.com/github/meyfa/ka-mensa-api/test_coverage)
 [![Maintainability](https://api.codeclimate.com/v1/badges/9b1f9ce6f3bec49c26a1/maintainability)](https://codeclimate.com/github/meyfa/ka-mensa-api/maintainability)
 
 
@@ -123,6 +124,7 @@ Contributions are welcome. Guidelines:
     license of this project.
 - Please write unit tests for as much code as possible.
     * To run: `npm test`
+    * With coverage: `npm run coverage`
 - Make sure to adhere to JS standard style and proper usage of TypeScript.
     * Linter: `npm run lint`
     * Automatic fixing of most style issues: `npm run lint-fix`
