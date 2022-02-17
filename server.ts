@@ -1,3 +1,4 @@
+import { constants } from 'os'
 import express from 'express'
 import ms from 'ms'
 import cors from 'cors'
@@ -23,20 +24,42 @@ function getAllowOrigin (): string | undefined {
 }
 
 /**
- * Start the server.
+ * Something that runs asynchronously in the background, such as a web server or timed job.
  */
-async function start (): Promise<void> {
-  const fsAdapter = new DirectoryAdapter(config.cache.directory)
-  await fsAdapter.init()
+interface Service {
+  /**
+   * Shut down the service.
+   */
+  readonly stop: () => void | Promise<void>
+}
 
-  const cache = new Cache(fsAdapter)
+/**
+ * Run a fetch job in the background, with the interval set in the config.
+ *
+ * @param cache The plan cache to use.
+ * @returns The job that was started.
+ */
+async function startFetchJob (cache: Cache): Promise<Service> {
+  const period = ms(config.fetchJob.interval)
 
-  // setup fetch job
-  const fetchInterval = ms(config.fetchJob.interval)
+  // run the job once immediately, and then repeatedly
   await runFetchJob(cache)
-  setInterval(() => runFetchJob(cache) as any, fetchInterval)
+  const interval = setInterval(() => {
+    void runFetchJob(cache)
+  }, period)
 
-  // setup server and routes
+  return {
+    stop: () => clearInterval(interval)
+  }
+}
+
+/**
+ * Start the web server.
+ *
+ * @param cache The plan cache to use.
+ * @returns The server that was started.
+ */
+async function startServer (cache: Cache): Promise<Service> {
   const app = express()
   const allowOrigin = getAllowOrigin()
   if (allowOrigin != null) {
@@ -44,12 +67,45 @@ async function start (): Promise<void> {
   }
   app.use(config.server.base, indexRoute(cache))
 
-  // listen
   const port = config.server.port
   const host = config.server.host
-  app.listen(port, host, () => {
+
+  const server = app.listen(port, host, () => {
     logger.log('info', `server listening on :${port}`)
   })
+
+  return {
+    async stop () {
+      return await new Promise((resolve) => {
+        server.close(() => resolve())
+      })
+    }
+  }
 }
 
-void start()
+/**
+ * Application entrypoint.
+ */
+async function main (): Promise<void> {
+  // set up our exit strategy as early as possible, so we can still abort when something hangs during startup
+  const activeServices: Service[] = []
+  for (const signal of ['SIGTERM', 'SIGINT'] as const) {
+    process.once(signal, () => {
+      console.log(`Received ${signal}, exiting`)
+      void Promise.all(activeServices.map(async (service) => await service.stop())).then(() => {
+        // process exit code is typically 128+signal on Linux, such as 143 for SIGTERM
+        process.exit(128 + constants.signals[signal])
+      })
+    })
+  }
+
+  const fsAdapter = new DirectoryAdapter(config.cache.directory)
+  await fsAdapter.init()
+
+  const cache = new Cache(fsAdapter)
+
+  activeServices.push(await startFetchJob(cache))
+  activeServices.push(await startServer(cache))
+}
+
+void main()

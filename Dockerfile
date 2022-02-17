@@ -25,5 +25,6 @@ COPY --from=build /usr/src/app/dist dist
 # we listen on :8080 by default
 EXPOSE 8080
 
-# start the server ("production" skips the build step)
-CMD ["npm", "run", "production"]
+# start the server (this is similar to "npm run production", but NPM does not
+# forward signals correctly, while Node does)
+CMD ["node", "dist/server.js"]
