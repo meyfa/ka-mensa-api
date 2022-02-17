@@ -3,6 +3,7 @@ import { MemoryAdapter } from 'fs-adapters'
 
 import chai, { expect } from 'chai'
 import chaiAsPromised from 'chai-as-promised'
+
 chai.use(chaiAsPromised)
 
 describe('cache.ts', function () {

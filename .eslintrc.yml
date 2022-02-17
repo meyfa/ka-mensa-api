@@ -6,15 +6,14 @@ parserOptions:
   project: './tsconfig.eslint.json'
 
 overrides:
-  - files: '*.test.js'
-    env:
-      mocha: true
+  - files: 'test/**/*.test.*'
     rules:
       no-unused-expressions: off
+      '@typescript-eslint/no-unused-expressions': off
 
 rules:
   # require JSDoc on every standard location, and also on classes, interfaces and enums
-  jsdoc/require-jsdoc: [ 'error', { contexts: [ 'ClassDeclaration', 'TSInterfaceDeclaration', 'TSEnumDeclaration' ] } ]
+  jsdoc/require-jsdoc: ['error', { contexts: ['ClassDeclaration', 'TSInterfaceDeclaration', 'TSEnumDeclaration'] }]
   jsdoc/require-param-type: off
   jsdoc/require-returns-type: off
   jsdoc/no-types: error
