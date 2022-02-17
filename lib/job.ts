@@ -7,7 +7,7 @@ import config from '../config'
 
 import { getSessionCookie } from './get-session-cookie'
 import { Cache } from './cache'
-import { logger } from '../logger'
+import { logger } from './logger'
 
 // CONSTANTS
 
