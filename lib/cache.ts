@@ -20,7 +20,7 @@ const ENOENT = 'ENOENT'
  * @returns The file name.
  */
 function buildFileName (date: DateSpec): string {
-  const formattedDate = moment(date).format('YYYY-MM-DD') as string
+  const formattedDate = moment(date).format('YYYY-MM-DD')
   return `${formattedDate}.json`
 }
 

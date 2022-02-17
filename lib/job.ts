@@ -56,7 +56,7 @@ async function fetchFromSimpleSite (): Promise<CanteenPlan[]> {
   const dates = getFetchDates(dayCount)
   const sessionCookie = await getSessionCookie()
 
-  return fetchMensa('simplesite', { dates, sessionCookie })
+  return await fetchMensa('simplesite', { dates, sessionCookie })
 }
 
 /**
@@ -65,7 +65,7 @@ async function fetchFromSimpleSite (): Promise<CanteenPlan[]> {
  * @returns Resolves to the fetched plan set.
  */
 async function fetchFromJsonApi (): Promise<CanteenPlan[]> {
-  return fetchMensa('jsonapi', {
+  return await fetchMensa('jsonapi', {
     auth: {
       user: config.fetchJob.jsonapiOptions.auth.user,
       password: config.fetchJob.jsonapiOptions.auth.password
