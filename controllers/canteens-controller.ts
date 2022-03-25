@@ -1,7 +1,8 @@
+import { createRequire } from 'node:module'
 import { Canteen, Line } from 'ka-mensa-fetch'
-import canteens from 'ka-mensa-fetch/data/canteens.json'
+import { NotFoundError } from '../lib/errors.js'
 
-import { NotFoundError } from '../lib/errors'
+const canteens: Canteen[] = createRequire(import.meta.url)('ka-mensa-fetch/data/canteens.json')
 
 // CONSTANTS
 

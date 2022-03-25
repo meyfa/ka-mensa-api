@@ -1,6 +1,6 @@
 /**
  * A special type of error that is intentionally thrown by the API.
- * It includes a HTTP status code and a message string.
+ * It includes an HTTP status code and a message string.
  *
  * Any error not inheriting from this class will be considered a bug and results in status code 500 to be sent,
  * without revealing the error message.

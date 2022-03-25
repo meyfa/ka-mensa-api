@@ -1,6 +1,5 @@
 import moment from 'moment'
-
-import { parseDate } from './util/parse-date'
+import { parseDate } from './util/parse-date.js'
 import { Adapter } from 'fs-adapters'
 import { CanteenPlan, DateSpec } from 'ka-mensa-fetch'
 

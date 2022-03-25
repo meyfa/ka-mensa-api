@@ -1,6 +1,6 @@
 import { Request, RequestHandler, Response } from 'express'
-import { ApiError } from './errors'
-import { logger } from './logger'
+import { ApiError } from './errors.js'
+import { logger } from './logger.js'
 
 /**
  * Respond with an error message.

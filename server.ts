@@ -1,14 +1,13 @@
-import { constants } from 'os'
+import { constants } from 'node:os'
 import express from 'express'
 import ms from 'ms'
 import cors from 'cors'
 import { DirectoryAdapter } from 'fs-adapters'
-
-import config from './config'
-import { Cache } from './lib/cache'
-import { runFetchJob } from './lib/job'
-import { indexRoute } from './routes'
-import { logger } from './lib/logger'
+import config from './config.js'
+import { Cache } from './lib/cache.js'
+import { runFetchJob } from './lib/job.js'
+import { indexRoute } from './routes/index.js'
+import { logger } from './lib/logger.js'
 
 /**
  * Determine the CORS origin to allow, from either the environment variables or the config.

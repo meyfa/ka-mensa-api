@@ -2,12 +2,10 @@ import { CanteenPlan, DateSpec, fetchMensa } from 'ka-mensa-fetch'
 import { group } from 'group-items'
 import moment from 'moment'
 import ms from 'ms'
-
-import config from '../config'
-
-import { getSessionCookie } from './get-session-cookie'
-import { Cache } from './cache'
-import { logger } from './logger'
+import config from '../config.js'
+import { getSessionCookie } from './get-session-cookie.js'
+import { Cache } from './cache.js'
+import { logger } from './logger.js'
 
 // CONSTANTS
 

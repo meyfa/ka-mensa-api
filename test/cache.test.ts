@@ -1,6 +1,5 @@
-import { Cache } from '../lib/cache'
+import { Cache } from '../lib/cache.js'
 import { MemoryAdapter } from 'fs-adapters'
-
 import chai, { expect } from 'chai'
 import chaiAsPromised from 'chai-as-promised'
 

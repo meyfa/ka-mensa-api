@@ -1,7 +1,6 @@
 import { Router } from 'express'
-
-import { Cache } from '../lib/cache'
-import { createHandler } from '../lib/create-handler'
+import { Cache } from '../lib/cache.js'
+import { createHandler } from '../lib/create-handler.js'
 
 /**
  * Create the router for retrieving API status information.

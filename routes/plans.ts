@@ -1,14 +1,14 @@
+import { createRequire } from 'node:module'
 import { Request, Router } from 'express'
+import { Canteen, DateSpec } from 'ka-mensa-fetch'
+import { Cache } from '../lib/cache.js'
+import { parseDate } from '../lib/util/parse-date.js'
+import { PlansController } from '../controllers/plans-controller.js'
+import { createHandler } from '../lib/create-handler.js'
+import { BadRequestError } from '../lib/errors.js'
+import { parseCommaFilter } from '../lib/util/parse-comma-filter.js'
 
-import { DateSpec } from 'ka-mensa-fetch'
-import canteens from 'ka-mensa-fetch/data/canteens.json'
-
-import { Cache } from '../lib/cache'
-import { parseDate } from '../lib/util/parse-date'
-import { PlansController } from '../controllers/plans-controller'
-import { createHandler } from '../lib/create-handler'
-import { BadRequestError } from '../lib/errors'
-import { parseCommaFilter } from '../lib/util/parse-comma-filter'
+const canteens: Canteen[] = createRequire(import.meta.url)('ka-mensa-fetch/data/canteens.json')
 
 // CONSTANTS
 
