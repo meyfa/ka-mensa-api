@@ -1,5 +1,7 @@
+import { createRequire } from 'node:module'
 import { LegendItem } from 'ka-mensa-fetch'
-import legend from 'ka-mensa-fetch/data/legend.json'
+
+const legend: LegendItem[] = createRequire(import.meta.url)('ka-mensa-fetch/data/legend.json')
 
 /**
  * API controller for retrieving the legend.

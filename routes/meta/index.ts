@@ -1,7 +1,6 @@
 import { Router } from 'express'
-
-import { Cache } from '../../lib/cache'
-import { legendRoute } from './legend'
+import { Cache } from '../../lib/cache.js'
+import { legendRoute } from './legend.js'
 
 /**
  * Create the router that combines meta information routes.

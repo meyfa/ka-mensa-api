@@ -3,6 +3,7 @@
   "name": "ka-mensa-api",
   "version": "0.0.0",
   "description": "Karlsruhe (KIT) Mensa API server",
+  "type": "module",
   "main": "dist/server.js",
   "scripts": {
     "start": "npm run build && npm run production",
@@ -11,7 +12,7 @@
     "lint": "eslint --ignore-path .gitignore . && tsc --noEmit",
     "lint-fix": "eslint --fix --ignore-path .gitignore . && tsc --noEmit",
     "coverage": "c8 --reporter=lcov --reporter=text --all --include \"**/*.ts\" npm test",
-    "test": "mocha --require ts-node/register --recursive \"test/**/*.test.*\""
+    "test": "mocha --recursive \"test/**/*.test.*\""
   },
   "repository": {
     "type": "git",
@@ -30,7 +31,7 @@
   },
   "homepage": "https://github.com/meyfa/ka-mensa-api",
   "engines": {
-    "node": ">=10.0.0"
+    "node": "^14.13.1 || >=16.0.0"
   },
   "dependencies": {
     "cors": "2.8.5",
