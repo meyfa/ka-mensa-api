@@ -1,5 +1,8 @@
 name: CI to Docker Hub
 
+# Prevent two instances of this workflow running at the same time
+concurrency: docker-publish
+
 on:
   push:
     branches:
