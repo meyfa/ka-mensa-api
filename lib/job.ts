@@ -101,13 +101,13 @@ async function fetchFromSource (source: string): Promise<CanteenPlan[]> {
  */
 export async function runFetchJob (cache: Cache): Promise<void> {
   const source = config.fetchJob.source
-  logger.log('info', 'fetching plans (source=' + source + ')')
+  logger.info(`fetching plans (source=${source})`)
 
   let plans
   try {
     plans = await fetchFromSource(source)
   } catch (e) {
-    logger.log('error', e)
+    logger.error(e)
     return
   }
 
@@ -118,9 +118,13 @@ export async function runFetchJob (cache: Cache): Promise<void> {
     // check for invalid date
     if (now.diff(date) > PLAN_AGE_MAXIMUM) {
       const formattedDate: string = moment(date).format('YYYY-MM-DD')
-      logger.log('warn', 'fetched a plan from ' + formattedDate + ' that was not stored due to its age')
+      logger.warn(`data for ${formattedDate} will not be stored due to its age`)
       continue
     }
+
+    const dateString = moment(date).format('YYYY-MM-DD')
+    const canteensList = plansForDate.map(plan => plan.id).join(',')
+    logger.info(`caching ${dateString} with ${plansForDate.length} canteens: [${canteensList}]`)
 
     await cache.put(date, plansForDate)
   }
