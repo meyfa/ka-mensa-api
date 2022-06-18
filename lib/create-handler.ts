@@ -49,7 +49,7 @@ export function createHandler (fn: (req: Request) => any): RequestHandler {
       sendResult(res, result)
     } catch (error) {
       if (!(error instanceof ApiError)) {
-        logger.log('error', error)
+        logger.error(error)
         sendError(res, 500, 'internal error')
         return
       }

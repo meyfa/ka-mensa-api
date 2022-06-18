@@ -56,7 +56,7 @@ async function startServer (cache: Cache): Promise<void> {
   const host = config.server.host
   const server = await promisifiedListen(app, port, host)
 
-  logger.log('info', `Server listening on :${port}`)
+  logger.info(`Server listening on :${port}`)
 
   onTermination(async () => await promisifiedClose(server))
 }
