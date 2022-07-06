@@ -1,15 +1,9 @@
 extends:
-  - 'standard-with-typescript'
+  - '@meyfa/eslint-config'
   - 'plugin:jsdoc/recommended'
 
 parserOptions:
   project: './tsconfig.eslint.json'
-
-overrides:
-  - files: 'test/**/*.test.*'
-    rules:
-      no-unused-expressions: off
-      '@typescript-eslint/no-unused-expressions': off
 
 rules:
   # this project requires .js extensions with imports because it is packaged as ESM:
