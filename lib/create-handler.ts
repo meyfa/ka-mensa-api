@@ -25,7 +25,7 @@ function sendError (res: Response, code: number, message: string): void {
 function sendResult (res: Response, data: any): void {
   res.status(200).json({
     success: true,
-    data: data
+    data
   })
 }
 
@@ -43,6 +43,7 @@ function sendResult (res: Response, data: any): void {
  * @returns The request handler.
  */
 export function createHandler (fn: (req: Request) => any): RequestHandler {
+  // eslint-disable-next-line @typescript-eslint/no-misused-promises
   return async (req: Request, res: Response): Promise<void> => {
     try {
       const result = await fn(req)
