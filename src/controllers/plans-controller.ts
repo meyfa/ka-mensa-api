@@ -1,6 +1,6 @@
 import { CanteenLine, CanteenPlan, DateSpec } from 'ka-mensa-fetch'
-import { Cache } from '../lib/cache.js'
-import { NotFoundError } from '../lib/errors.js'
+import { Cache } from '../cache.js'
+import { NotFoundError } from '../errors.js'
 
 // TYPES
 

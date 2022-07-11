@@ -1,7 +1,7 @@
 import { Request, Router } from 'express'
-import { Cache } from '../lib/cache.js'
+import { Cache } from '../cache.js'
 import { CanteensController } from '../controllers/canteens-controller.js'
-import { createHandler } from '../lib/create-handler.js'
+import { createHandler } from '../create-handler.js'
 
 // ROUTES FACTORY
 

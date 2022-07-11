@@ -3,10 +3,10 @@ import ms from 'ms'
 import cors from 'cors'
 import { DirectoryAdapter } from 'fs-adapters'
 import config from './config.js'
-import { Cache } from './lib/cache.js'
-import { runFetchJob } from './lib/job.js'
+import { Cache } from './cache.js'
+import { runFetchJob } from './job.js'
 import { indexRoute } from './routes/index.js'
-import { logger } from './lib/logger.js'
+import { logger } from './logger.js'
 import { onTermination, promisifiedClose, promisifiedListen } from 'omniwheel'
 
 /**
