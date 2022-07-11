@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import { parseDate } from '../../lib/util/parse-date.js'
+import { parseDate } from '../../src/util/parse-date.js'
 
 describe('parse-date.ts', function () {
   it('parses valid dates', function () {

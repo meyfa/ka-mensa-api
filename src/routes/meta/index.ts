@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { Cache } from '../../lib/cache.js'
+import { Cache } from '../../cache.js'
 import { legendRoute } from './legend.js'
 
 /**

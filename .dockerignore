@@ -7,8 +7,4 @@
 !package-lock.json
 !tsconfig.json
 !tsconfig.eslint.json
-!server.ts
-!config.ts
-!routes
-!lib
-!controllers
+!src

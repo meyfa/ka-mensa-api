@@ -1,5 +1,5 @@
 import { Canteen, Line, canteens } from 'ka-mensa-fetch'
-import { NotFoundError } from '../lib/errors.js'
+import { NotFoundError } from '../errors.js'
 
 // CONSTANTS
 

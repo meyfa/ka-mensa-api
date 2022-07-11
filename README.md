@@ -36,10 +36,10 @@ somewhere and run `npm install` to load dependencies.
 
 ### Configuration
 
-Open up `config.ts` and configure to your liking. Notice that network options
+Open up `src/config.ts` and configure to your liking. Notice that network options
 are rather limited. If you want HTTPS support, CORS headers or advanced
 embedding into existing domain structures, you will need to set up a reverse
-proxy like nginx.
+proxy, such as nginx.
 
 You might want to change the plan fetch source. This will not impact
 ka-mensa-api's behavior but only how it retrieves its data.
@@ -65,7 +65,7 @@ and auth requirements.
 
 To start the server, run `npm start`. It will immediately fetch the most recent
 set of plans, then listen for API requests. Plan polling will continue
-indefinitely with the interval set in `config.ts`.
+indefinitely with the interval set in `src/config.ts`.
 
 Note that `npm start` is shortcut for `npm run build` followed by `npm run production`,
 where the former compiles the TypeScript code and the latter executes it.

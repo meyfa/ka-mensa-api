@@ -1,11 +1,11 @@
 import { Router } from 'express'
-import { Cache } from '../lib/cache.js'
+import { Cache } from '../cache.js'
 import { defaultRoute } from './default.js'
 import { metaRoute } from './meta/index.js'
 import { canteensRoute } from './canteens.js'
 import { plansRoute } from './plans.js'
-import { createHandler } from '../lib/create-handler.js'
-import { NotFoundError } from '../lib/errors.js'
+import { createHandler } from '../create-handler.js'
+import { NotFoundError } from '../errors.js'
 
 /**
  * Create the router that combines all other routes.

@@ -1,11 +1,11 @@
 import { Request, Router } from 'express'
 import { DateSpec, canteens } from 'ka-mensa-fetch'
-import { Cache } from '../lib/cache.js'
-import { parseDate } from '../lib/util/parse-date.js'
+import { Cache } from '../cache.js'
+import { parseDate } from '../util/parse-date.js'
 import { PlansController } from '../controllers/plans-controller.js'
-import { createHandler } from '../lib/create-handler.js'
-import { BadRequestError } from '../lib/errors.js'
-import { parseCommaFilter } from '../lib/util/parse-comma-filter.js'
+import { createHandler } from '../create-handler.js'
+import { BadRequestError } from '../errors.js'
+import { parseCommaFilter } from '../util/parse-comma-filter.js'
 
 // CONSTANTS
 

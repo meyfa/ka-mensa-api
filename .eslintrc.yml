@@ -6,8 +6,6 @@ parserOptions:
   project: './tsconfig.eslint.json'
 
 rules:
-  # this project requires .js extensions with imports because it is packaged as ESM:
-  import/extensions: [error, always]
   # require JSDoc on every standard location, and also on classes, interfaces and enums
   jsdoc/require-jsdoc: ['error', { contexts: ['ClassDeclaration', 'TSInterfaceDeclaration', 'TSEnumDeclaration'] }]
   jsdoc/require-param-type: off
