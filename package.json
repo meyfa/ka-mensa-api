@@ -9,9 +9,9 @@
     "start": "npm run build && npm run production",
     "build": "rimraf dist && tsc",
     "production": "node dist/server.js",
-    "lint": "eslint --ignore-path .gitignore . && tsc --noEmit",
-    "lint-fix": "eslint --fix --ignore-path .gitignore . && tsc --noEmit",
-    "coverage": "c8 --reporter=lcov --reporter=text --all --include \"**/*.ts\" npm test",
+    "lint": "tsc --noEmit -p tsconfig.lint.json && eslint --ignore-path .gitignore .",
+    "lint-fix": "tsc --noEmit -p tsconfig.lint.json && eslint --fix --ignore-path .gitignore .",
+    "coverage": "c8 --reporter=lcov --reporter=text --all --src=src npm test",
     "test": "mocha --recursive \"test/**/*.test.*\""
   },
   "repository": {
