@@ -45,7 +45,7 @@
     "winston": "3.8.1"
   },
   "devDependencies": {
-    "@meyfa/eslint-config": "2.0.0",
+    "@meyfa/eslint-config": "2.0.2",
     "@types/chai": "4.3.1",
     "@types/chai-as-promised": "7.1.5",
     "@types/cors": "2.8.12",
