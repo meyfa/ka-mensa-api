@@ -1,7 +1,7 @@
 import { Request, Router } from 'express'
 import { DateSpec, canteens } from 'ka-mensa-fetch'
 import { Cache } from '../cache.js'
-import { parseDate } from '../util/parse-date.js'
+import { parseDate } from '../util/date-format.js'
 import { PlansController } from '../controllers/plans-controller.js'
 import { createHandler } from '../create-handler.js'
 import { BadRequestError } from '../errors.js'

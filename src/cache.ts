@@ -1,5 +1,4 @@
-import moment from 'moment'
-import { parseDate } from './util/parse-date.js'
+import { formatDate, parseDate } from './util/date-format.js'
 import { Adapter } from 'fs-adapters'
 import { CanteenPlan, DateSpec } from 'ka-mensa-fetch'
 
@@ -19,8 +18,7 @@ const ENOENT = 'ENOENT'
  * @returns The file name.
  */
 function buildFileName (date: DateSpec): string {
-  const formattedDate = moment(date).format('YYYY-MM-DD')
-  return `${formattedDate}.json`
+  return `${formatDate(date)}.json`
 }
 
 // EXPORTS
