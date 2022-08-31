@@ -1,14 +1,20 @@
 import moment from 'moment'
 import { DateSpec } from 'ka-mensa-fetch'
 
-// CONSTANTS
-
 /**
  * The date format that is used.
  */
 const DATE_FORMAT = 'YYYY-MM-DD'
 
-// MAIN EXPORT
+/**
+ * Format the given date spec into a string YYYY-MM-DD.
+ *
+ * @param date The date object.
+ * @returns The formatted string.
+ */
+export function formatDate (date: DateSpec): string {
+  return moment(date).format('YYYY-MM-DD')
+}
 
 /**
  * Parse the given date string into a date object.
