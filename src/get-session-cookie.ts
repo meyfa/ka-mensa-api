@@ -1,20 +1,14 @@
 import { requestSessionCookie } from 'ka-mensa-fetch'
 import ms from 'ms'
 
-// CONSTANTS
-
 /**
  * Session cookie lifetime duration, i.e. time before requesting another.
  */
 // The cookie is assumed to live for at least 30 minutes
 const COOKIE_TIMEOUT = ms('29min')
 
-// STATE
-
 let cookieValue: string | undefined
 let cookieTime = 0
-
-// MAIN EXPORT
 
 /**
  * Obtain the session cookie to use. This may return undefined on failure. It will

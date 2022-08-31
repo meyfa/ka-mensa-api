@@ -7,11 +7,7 @@ import { createHandler } from '../create-handler.js'
 import { BadRequestError } from '../errors.js'
 import { parseCommaFilter } from '../util/parse-comma-filter.js'
 
-// CONSTANTS
-
 const CANTEEN_IDS = canteens.map(({ id }) => id)
-
-// UTILITY METHODS
 
 /**
  * Retrieve and parse the 'date' parameter from the given request.
@@ -47,8 +43,6 @@ function getCanteensFilter (req: Request): string[] | undefined {
   }
   return canteensFilter
 }
-
-// ROUTES FACTORY
 
 /**
  * Create the router for retrieving plan information.
