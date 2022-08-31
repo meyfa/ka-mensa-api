@@ -2,8 +2,6 @@ import { CanteenLine, CanteenPlan, DateSpec } from 'ka-mensa-fetch'
 import { Cache } from '../cache.js'
 import { NotFoundError } from '../errors.js'
 
-// TYPES
-
 /**
  * The structure for plan summaries.
  */
@@ -23,8 +21,6 @@ export interface PlanDetail {
   lines: CanteenLine[]
 }
 
-// MAPPER
-
 /**
  * Map the raw plan data into a presentable format.
  *
@@ -41,8 +37,6 @@ function mapPlan (raw: CanteenPlan): PlanDetail {
     lines: raw.lines
   }
 }
-
-// MAIN EXPORT
 
 /**
  * API controller for retrieving canteen plans.

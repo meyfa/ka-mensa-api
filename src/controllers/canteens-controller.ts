@@ -1,8 +1,6 @@
 import { Canteen, Line, canteens } from 'ka-mensa-fetch'
 import { NotFoundError } from '../errors.js'
 
-// CONSTANTS
-
 /**
  * A map: canteen id -> canteen object.
  */
@@ -15,8 +13,6 @@ const CANTEEN_LINES_BY_ID = new Map(canteens.map(canteen => [
   canteen.id,
   new Map(canteen.lines.map(line => [line.id, line]))
 ]))
-
-// MAIN EXPORT
 
 /**
  * API controller for retrieving general data about the available canteens.

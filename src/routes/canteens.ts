@@ -3,8 +3,6 @@ import { Cache } from '../cache.js'
 import { CanteensController } from '../controllers/canteens-controller.js'
 import { createHandler } from '../create-handler.js'
 
-// ROUTES FACTORY
-
 /**
  * Create the router for retrieving canteen information.
  *

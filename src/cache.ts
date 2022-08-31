@@ -2,14 +2,10 @@ import { formatDate, parseDate } from './util/date-format.js'
 import { Adapter } from 'fs-adapters'
 import { CanteenPlan, DateSpec } from 'ka-mensa-fetch'
 
-// CONSTANTS
-
 /**
  * ENOENT error code.
  */
 const ENOENT = 'ENOENT'
-
-// UTILITY METHODS
 
 /**
  * Build the file name from the given date object.
@@ -20,8 +16,6 @@ const ENOENT = 'ENOENT'
 function buildFileName (date: DateSpec): string {
   return `${formatDate(date)}.json`
 }
-
-// EXPORTS
 
 /**
  * A cache directory manager, providing retrieval and insertion of canteen plans.

@@ -7,8 +7,6 @@ import { getSessionCookie } from './get-session-cookie.js'
 import { Cache } from './cache.js'
 import { logger } from './logger.js'
 
-// CONSTANTS
-
 /**
  * Maximum age of a plan that is still considered valid for caching. If a plan
  * is older than this, there likely was an error during retrieval or date
@@ -17,8 +15,6 @@ import { logger } from './logger.js'
 // use a relaxed duration of 10 days, to catch wrongly detected months/years
 // while still allowing for some uncertainties
 const PLAN_AGE_MAXIMUM = ms('10d')
-
-// METHODS
 
 /**
  * Determine the dates for which plans should be fetched, based on the current
@@ -87,8 +83,6 @@ async function fetchFromSource (source: string): Promise<CanteenPlan[]> {
   }
   throw new Error('invalid source setting')
 }
-
-// MAIN EXPORT
 
 /**
  * Run the fetcher job, updating the available plans.
