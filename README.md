@@ -71,10 +71,16 @@ Note that `npm start` is shortcut for `npm run build` followed by `npm run produ
 where the former compiles the TypeScript code and the latter executes it.
 To start the server without compiling again, use `npm run production` only.
 
+A fixup job will run at startup. This fills in missing data that might have
+been missing at cache time but is now inferrable due to an updated data set.
+Any plans that are considered complete, or that cannot be inferred further,
+will not be changed.
+
 
 ## Setup with Docker
 
-This project is available as a Docker image! See also [https://hub.docker.com/r/meyfa/ka-mensa-api](https://hub.docker.com/r/meyfa/ka-mensa-api).
+This project is available as a Docker image! See also
+[https://hub.docker.com/r/meyfa/ka-mensa-api](https://hub.docker.com/r/meyfa/ka-mensa-api).
 
 ### Running the Container
 

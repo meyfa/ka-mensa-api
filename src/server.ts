@@ -8,6 +8,10 @@ import { runFetchJob } from './job.js'
 import { indexRoute } from './routes/index.js'
 import { logger } from './logger.js'
 import { onTermination, promisifiedClose, promisifiedListen } from 'omniwheel'
+import { fixupCache } from './fixup.js'
+import { formatDate } from './util/date-format.js'
+
+const FIXUP_DRY_RUN = false
 
 /**
  * Determine the CORS origin to allow, from either the environment variables or the config.
@@ -20,6 +24,19 @@ function getAllowOrigin (): string | undefined {
     process.env.API_SERVER_CORS_ALLOWORIGIN,
     config.server.cors?.allowOrigin
   ].find(value => value != null && value !== '')
+}
+
+/**
+ * Perform a full fixup on the given cache. This fills in missing data that might have been missing at cache time but
+ * is now inferrable due to an updated data set.
+ *
+ * @param cache The cache to operate on.
+ */
+async function fixupCachedFiles (cache: Cache): Promise<void> {
+  await fixupCache(cache, (date) => {
+    logger.info(`fixup ${formatDate(date)}`)
+    return !FIXUP_DRY_RUN
+  })
 }
 
 /**
@@ -70,6 +87,7 @@ async function main (): Promise<void> {
 
   const cache = new Cache(fsAdapter)
 
+  await fixupCachedFiles(cache)
   await startFetchJob(cache)
   await startServer(cache)
 }
