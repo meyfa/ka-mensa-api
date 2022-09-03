@@ -118,8 +118,11 @@ describe('cache.ts', function () {
     it('ignores files not matching the expected name format', function () {
       const adapter = new MemoryAdapter({
         '2020-09-07.txt': Buffer.alloc(0),
+        '2020-09-08xjson': Buffer.alloc(0),
         'foo.json': Buffer.alloc(0),
-        '1-1-1.json': Buffer.alloc(0)
+        '1-1-1.json': Buffer.alloc(0),
+        '2022-09-02.json.bak': Buffer.alloc(0),
+        '2022-09-03.sample.json': Buffer.alloc(0)
       })
       const cache = new Cache(adapter)
       return expect(cache.list()).to.eventually.be.an('array').that.is.empty

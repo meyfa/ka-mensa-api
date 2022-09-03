@@ -47,7 +47,7 @@ export class Cache {
       const contents = await this.fsAdapter.read(file, { encoding: 'utf8' }) as string
       return JSON.parse(contents)
     } catch (e: any) {
-      if (e != null && e.code === ENOENT) {
+      if (e?.code === ENOENT) {
         // missing file - item not found
         return undefined
       }
@@ -74,11 +74,8 @@ export class Cache {
    * @returns Resolves to an array of date objects.
    */
   async list (): Promise<DateSpec[]> {
-    const files: string[] = await this.fsAdapter.listFiles()
-    return files.filter(file => {
-      return /^\d{4}-\d{2}-\d{2}.json$/.test(file)
-    }).map(file => {
-      return parseDate(file.substring(0, file.indexOf('.')))
-    }).filter((date: DateSpec | undefined): date is DateSpec => date != null)
+    return (await this.fsAdapter.listFiles())
+      .map((file) => file.endsWith('.json') ? parseDate(file.slice(0, file.lastIndexOf('.'))) : undefined)
+      .filter((date: DateSpec | undefined): date is DateSpec => date != null)
   }
 }
