@@ -122,8 +122,7 @@ origins.
 
 ## Environment Variables
 
-Some options can be configured via environment variables, which will take
-precedence over the configuration file. They are as follows:
+Some options can be configured via environment variables. They are as follows:
 
 - `MENSA_CACHE_DIRECTORY`: The path to a directory where downloaded plans
     should be stored, and where they should be served from.

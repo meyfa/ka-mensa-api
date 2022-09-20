@@ -16,30 +16,29 @@ const FIXUP_DRY_RUN = false
 const DEFAULT_CACHE_DIRECTORY = path.resolve('./cache')
 
 /**
- * Determine the absolute path to the cache directory, from either the environment variables or the config.
- * If the option is not configured, a default path will be returned.
+ * Determine the absolute path to the cache directory from the environment variables. This will fall back to a default
+ * cache path if the env var is not set.
  *
  * @returns The absolute cache directory path to use.
  */
 function getCacheDirectory (): string {
   const directory = process.env.MENSA_CACHE_DIRECTORY
-  if (directory != null && directory !== '') {
-    return path.resolve(directory)
-  }
-  return DEFAULT_CACHE_DIRECTORY
+  return directory != null && directory !== ''
+    ? path.resolve(directory)
+    : DEFAULT_CACHE_DIRECTORY
 }
 
 /**
- * Determine the CORS origin to allow, from either the environment variables or the config.
- * This function will return a string if and only if the option is set and is not empty.
+ * Determine the CORS origin to allow from the environment variables.
+ * This function will return a string if (and only if) the option is set and is not empty.
  *
  * @returns The origin value, if it is valid, and undefined otherwise.
  */
 function getAllowOrigin (): string | undefined {
-  return [
-    process.env.MENSA_CORS_ALLOWORIGIN,
-    config.server.cors?.allowOrigin
-  ].find(value => value != null && value !== '')
+  const allowOrigin = process.env.MENSA_CORS_ALLOWORIGIN
+  return allowOrigin != null && allowOrigin !== ''
+    ? allowOrigin
+    : undefined
 }
 
 /**
