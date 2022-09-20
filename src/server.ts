@@ -10,8 +10,24 @@ import { logger } from './logger.js'
 import { onTermination, promisifiedClose, promisifiedListen } from 'omniwheel'
 import { fixupCache } from './fixup.js'
 import { formatDate } from './util/date-format.js'
+import path from 'node:path'
 
 const FIXUP_DRY_RUN = false
+const DEFAULT_CACHE_DIRECTORY = path.resolve('./cache')
+
+/**
+ * Determine the absolute path to the cache directory, from either the environment variables or the config.
+ * If the option is not configured, a default path will be returned.
+ *
+ * @returns The absolute cache directory path to use.
+ */
+function getCacheDirectory (): string {
+  const directory = process.env.MENSA_CACHE_DIRECTORY
+  if (directory != null && directory !== '') {
+    return path.resolve(directory)
+  }
+  return DEFAULT_CACHE_DIRECTORY
+}
 
 /**
  * Determine the CORS origin to allow, from either the environment variables or the config.
@@ -82,7 +98,10 @@ async function startServer (cache: Cache): Promise<void> {
  * Application entrypoint.
  */
 async function main (): Promise<void> {
-  const fsAdapter = new DirectoryAdapter(config.cache.directory)
+  const cacheDirectory = getCacheDirectory()
+  logger.info(`Using cache directory "${cacheDirectory}"`)
+
+  const fsAdapter = new DirectoryAdapter(cacheDirectory)
   await fsAdapter.init()
 
   const cache = new Cache(fsAdapter)

@@ -37,13 +37,11 @@ somewhere and run `npm install` to load dependencies.
 ### Configuration
 
 Open up `src/config.ts` and configure to your liking. Notice that network options
-are rather limited. If you want HTTPS support, CORS headers or advanced
-embedding into existing domain structures, you will need to set up a reverse
-proxy, such as nginx.
+are rather limited. If you want HTTPS support or advanced embedding into existing
+domain structures, you will need to set up a reverse proxy, such as nginx.
 
-You might want to change the plan fetch source. This will not impact
-ka-mensa-api's behavior but only how it retrieves its data.
-There are two options available:
+You might want to change the plan fetch source. This will not impact the API
+behavior but only how data is retrieved. There are two options available:
 
 - `'simplesite'` (the default)
 - `'jsonapi'`
@@ -120,6 +118,19 @@ docker run \
 
 Specify a regular URL to only allow that one origin. Use `*` to allow all
 origins.
+
+
+## Environment Variables
+
+Some options can be configured via environment variables, which will take
+precedence over the configuration file. They are as follows:
+
+- `MENSA_CACHE_DIRECTORY`: The path to a directory where downloaded plans
+    should be stored, and where they should be served from.
+    Defaults to a `cache/` directory inside the working directory.
+- `API_SERVER_CORS_ALLOWORIGIN`: Set this to a specific URL to allow CORS
+    requests from that URL, or set to `*` to allow all origins.
+    Defaults to not serving any CORS headers.
 
 
 ## Development
