@@ -37,7 +37,7 @@ function getCacheDirectory (): string {
  */
 function getAllowOrigin (): string | undefined {
   return [
-    process.env.API_SERVER_CORS_ALLOWORIGIN,
+    process.env.MENSA_CORS_ALLOWORIGIN,
     config.server.cors?.allowOrigin
   ].find(value => value != null && value !== '')
 }

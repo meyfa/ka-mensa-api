@@ -112,7 +112,7 @@ docker run \
         --name mensa \
         -p <host-port>:8080 \
         -v /path/on/host:/usr/src/app/cache \
-        -e API_SERVER_CORS_ALLOWORIGIN=https://example.com \
+        -e MENSA_CORS_ALLOWORIGIN=https://example.com \
         -d meyfa/ka-mensa-api
 ```
 
@@ -128,8 +128,8 @@ precedence over the configuration file. They are as follows:
 - `MENSA_CACHE_DIRECTORY`: The path to a directory where downloaded plans
     should be stored, and where they should be served from.
     Defaults to a `cache/` directory inside the working directory.
-- `API_SERVER_CORS_ALLOWORIGIN`: Set this to a specific URL to allow CORS
-    requests from that URL, or set to `*` to allow all origins.
+- `MENSA_CORS_ALLOWORIGIN`: Set this to a specific URL to allow CORS requests
+    from that URL, or set to `*` to allow all origins.
     Defaults to not serving any CORS headers.
 
 
