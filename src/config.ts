@@ -1,5 +1,3 @@
-import path from 'node:path'
-
 export default {
   server: {
     /**
@@ -27,13 +25,6 @@ export default {
        */
       allowOrigin: ''
     }
-  },
-
-  cache: {
-    /**
-     * Cache base path.
-     */
-    directory: path.join(process.cwd(), './cache')
   },
 
   fetchJob: {
