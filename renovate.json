@@ -7,9 +7,26 @@
     {
       "matchDepTypes": ["devDependencies"],
       "extends": ["schedule:weekly"]
+    },
+    {
+      "matchDepTypes": ["devDependencies"],
+      "matchUpdateTypes": ["minor", "patch", "lockFileMaintenance"],
+      "matchPackageNames": [
+        "typescript",
+        "eslint",
+        "stylelint",
+        "stylelint-config-standard",
+        "@meyfa/eslint-config"
+      ],
+      "automerge": true
+    },
+    {
+      "matchPackagePatterns": ["^@octokit/"],
+      "groupName": "octokit packages"
     }
   ],
   "lockFileMaintenance": {
-    "enabled": true
+    "enabled": true,
+    "automerge": true
   }
 }
