@@ -50,7 +50,7 @@
     "@types/chai-as-promised": "7.1.5",
     "@types/cors": "2.8.12",
     "@types/express": "4.17.14",
-    "@types/mocha": "10.0.0",
+    "@types/mocha": "10.0.1",
     "@types/ms": "0.7.31",
     "@types/node": "16.11.68",
     "c8": "7.12.0",
@@ -58,7 +58,7 @@
     "chai-as-promised": "7.1.1",
     "eslint": "8.32.0",
     "eslint-plugin-jsdoc": "39.3.6",
-    "mocha": "10.1.0",
+    "mocha": "10.2.0",
     "rimraf": "4.1.1",
     "ts-node": "10.9.1",
     "typescript": "4.9.4"
