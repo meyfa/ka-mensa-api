@@ -1,5 +1,5 @@
 # -- compilation --
-FROM node:lts-alpine as build
+FROM node:18-alpine as build
 WORKDIR /usr/src/app
 
 # install dependencies
@@ -12,7 +12,7 @@ RUN npm run build
 
 
 # -- execution --
-FROM node:lts-alpine
+FROM node:18-alpine
 WORKDIR /usr/src/app
 
 # install PRODUCTION dependencies
