@@ -31,7 +31,7 @@
   },
   "homepage": "https://github.com/meyfa/ka-mensa-api",
   "engines": {
-    "node": "^14.13.1 || >=16.0.0"
+    "node": ">=18.0.0"
   },
   "dependencies": {
     "cors": "2.8.5",
@@ -46,21 +46,21 @@
   },
   "devDependencies": {
     "@meyfa/eslint-config": "3.0.0",
-    "@types/chai": "4.3.3",
+    "@types/chai": "4.3.4",
     "@types/chai-as-promised": "7.1.5",
     "@types/cors": "2.8.13",
-    "@types/express": "4.17.14",
+    "@types/express": "4.17.16",
     "@types/mocha": "10.0.1",
     "@types/ms": "0.7.31",
-    "@types/node": "16.11.68",
+    "@types/node": "18.11.18",
     "c8": "7.12.0",
-    "chai": "4.3.6",
+    "chai": "4.3.7",
     "chai-as-promised": "7.1.1",
-    "eslint": "8.32.0",
-    "eslint-plugin-jsdoc": "39.3.6",
+    "eslint": "8.33.0",
+    "eslint-plugin-jsdoc": "39.7.4",
     "mocha": "10.2.0",
-    "rimraf": "4.1.1",
+    "rimraf": "4.1.2",
     "ts-node": "10.9.1",
-    "typescript": "4.9.4"
+    "typescript": "4.9.5"
   }
 }
