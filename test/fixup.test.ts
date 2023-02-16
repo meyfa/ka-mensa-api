@@ -1,11 +1,8 @@
-import chai, { expect } from 'chai'
-import chaiAsPromised from 'chai-as-promised'
+import assert from 'node:assert'
 import { Cache } from '../src/cache.js'
 import { MemoryAdapter, ReadWriteOptions } from 'fs-adapters'
 import { CanteenPlan, canteens, DateSpec } from 'ka-mensa-fetch'
 import { fixupCache } from '../src/fixup.js'
-
-chai.use(chaiAsPromised)
 
 /**
  * An extension of in-memory file storage that also tracks all write operations, for asserting in tests.
@@ -22,8 +19,8 @@ class TestMemoryAdapter extends MemoryAdapter {
 describe('fixup.ts', function () {
   before(function () {
     // If these assumptions don't hold, the tests would break.
-    expect(canteens.length).to.be.greaterThanOrEqual(2)
-    expect(canteens[0].lines.length).to.be.greaterThanOrEqual(2)
+    assert.ok(canteens.length >= 2)
+    assert.ok(canteens[0].lines.length >= 2)
   })
 
   // Plan factory functions (for test data)
@@ -72,15 +69,15 @@ describe('fixup.ts', function () {
       for (const plans of plansSet) {
         await cache.put(plans[0].date, plans)
       }
-      expect(adapter.writeOperations).to.have.lengthOf(plansSet.length)
+      assert.strictEqual(adapter.writeOperations.length, plansSet.length)
       const calls: DateSpec[] = []
       await fixupCache(cache, (fixedDate) => {
         calls.push(fixedDate)
         return true
       })
       // no predicate calls and no write operations (after the initial cache setup)
-      expect(calls.length).to.equal(0)
-      expect(adapter.writeOperations).to.have.lengthOf(plansSet.length)
+      assert.strictEqual(calls.length, 0)
+      assert.strictEqual(adapter.writeOperations.length, plansSet.length)
     })
 
     it('calls the predicate for changed plans but does not write if it returns false', async function () {
@@ -96,20 +93,20 @@ describe('fixup.ts', function () {
       for (const plans of plansSet) {
         await cache.put(plans[0].date, plans)
       }
-      expect(adapter.writeOperations).to.have.lengthOf(plansSet.length)
+      assert.strictEqual(adapter.writeOperations.length, plansSet.length)
       const calls: DateSpec[] = []
       await fixupCache(cache, (fixedDate) => {
         calls.push(fixedDate)
         return false
       })
       // predicate called for each bad plan but not the good ones
-      expect(calls).to.deep.equal([
+      assert.deepStrictEqual(calls, [
         plansSet[1][0].date, // missingCanteenId
         plansSet[2][0].date, // missingLineId
         plansSet[4][0].date // missingBoth
       ])
       // no write operations (after the initial cache setup)
-      expect(adapter.writeOperations).to.have.lengthOf(plansSet.length)
+      assert.strictEqual(adapter.writeOperations.length, plansSet.length)
     })
 
     it('writes fixed files if the predicate returns true', async function () {
@@ -125,21 +122,21 @@ describe('fixup.ts', function () {
       for (const plans of plansSet) {
         await cache.put(plans[0].date, plans)
       }
-      expect(adapter.writeOperations).to.have.lengthOf(plansSet.length)
+      assert.strictEqual(adapter.writeOperations.length, plansSet.length)
       const calls: DateSpec[] = []
       await fixupCache(cache, (fixedDate) => {
         calls.push(fixedDate)
         return fixedDate.day === 2 || fixedDate.day === 5
       })
       // predicate called for each bad plan but not the good ones
-      expect(calls).to.deep.equal([
+      assert.deepStrictEqual(calls, [
         plansSet[1][0].date, // missingCanteenId
         plansSet[2][0].date, // missingLineId
         plansSet[4][0].date // missingBoth
       ])
       // 2 additional write operations after cache setup
-      expect(adapter.writeOperations).to.have.lengthOf(plansSet.length + 2)
-      expect(adapter.writeOperations.slice(plansSet.length)).to.deep.equal(['2022-09-02.json', '2022-09-05.json'])
+      assert.strictEqual(adapter.writeOperations.length, plansSet.length + 2)
+      assert.deepStrictEqual(adapter.writeOperations.slice(plansSet.length), ['2022-09-02.json', '2022-09-05.json'])
     })
 
     it('fixes the ids but keeps everything else the same', async function () {
@@ -156,7 +153,7 @@ describe('fixup.ts', function () {
       await fixupCache(cache, () => true)
       // Each fixed "bad" plan should now equal the good plan!
       for (const plans of plansSet) {
-        expect(await cache.get(plans[0].date)).to.deep.equal(good(plans[0].date))
+        assert.deepStrictEqual(await cache.get(plans[0].date), good(plans[0].date))
       }
     })
 
@@ -195,9 +192,9 @@ describe('fixup.ts', function () {
         return true
       })
       // only the last one can actually be fixed, even though all of them are missing something
-      expect(calls).to.deep.equal([oneKnownLineName.date])
-      expect(adapter.writeOperations).to.have.lengthOf(4)
-      expect(adapter.writeOperations[3]).to.equal('2022-09-03.json')
+      assert.deepStrictEqual(calls, [oneKnownLineName.date])
+      assert.strictEqual(adapter.writeOperations.length, 4)
+      assert.strictEqual(adapter.writeOperations[3], '2022-09-03.json')
     })
 
     it('fixes plans for a date when at least one is incomplete', async function () {
@@ -219,18 +216,18 @@ describe('fixup.ts', function () {
       const adapter = new TestMemoryAdapter()
       const cache = new Cache(adapter)
       await cache.put(plans[0].date, plans)
-      expect(adapter.writeOperations).to.deep.equal(['2022-09-01.json'])
+      assert.deepStrictEqual(adapter.writeOperations, ['2022-09-01.json'])
       const calls: DateSpec[] = []
       await fixupCache(cache, (fixedDate) => {
         calls.push(fixedDate)
         return true
       })
-      expect(calls).to.deep.equal([plans[0].date])
-      expect(adapter.writeOperations).to.deep.equal(['2022-09-01.json', '2022-09-01.json'])
+      assert.deepStrictEqual(calls, [plans[0].date])
+      assert.deepStrictEqual(adapter.writeOperations, ['2022-09-01.json', '2022-09-01.json'])
       const updatedPlans = await cache.get(plans[0].date) as CanteenPlan[]
-      expect(updatedPlans).to.have.lengthOf(2)
-      expect(updatedPlans[0]).to.deep.equal(plans[0])
-      expect(updatedPlans[1]).to.deep.equal({ ...plans[1], id: canteens[1].id })
+      assert.strictEqual(updatedPlans.length, 2)
+      assert.deepStrictEqual(updatedPlans[0], plans[0])
+      assert.deepStrictEqual(updatedPlans[1], { ...plans[1], id: canteens[1].id })
     })
   })
 })
