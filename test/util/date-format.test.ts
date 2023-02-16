@@ -1,30 +1,30 @@
-import { expect } from 'chai'
+import assert from 'node:assert'
 import { formatDate, parseDate } from '../../src/util/date-format.js'
 
 describe('date-format.ts', function () {
   describe('formatDate()', function () {
     it('formats dates correctly', function () {
-      expect(formatDate({
+      assert.strictEqual(formatDate({
         year: 2019,
         month: 0,
         day: 1
-      })).to.equal('2019-01-01')
-      expect(formatDate({
+      }), '2019-01-01')
+      assert.strictEqual(formatDate({
         year: 2019,
         month: 11,
         day: 1
-      })).to.equal('2019-12-01')
+      }), '2019-12-01')
     })
   })
 
   describe('parseDate()', function () {
     it('parses valid dates', function () {
-      expect(parseDate('2019-01-01')).to.deep.equal({
+      assert.deepStrictEqual(parseDate('2019-01-01'), {
         year: 2019,
         month: 0,
         day: 1
       })
-      expect(parseDate('2019-12-01')).to.deep.equal({
+      assert.deepStrictEqual(parseDate('2019-12-01'), {
         year: 2019,
         month: 11,
         day: 1
@@ -32,30 +32,30 @@ describe('date-format.ts', function () {
     })
 
     it('limits month', function () {
-      expect(parseDate('2019-00-01')).to.be.undefined
-      expect(parseDate('2019-13-01')).to.be.undefined
+      assert.strictEqual(parseDate('2019-00-01'), undefined)
+      assert.strictEqual(parseDate('2019-13-01'), undefined)
     })
 
     it('limits day', function () {
-      expect(parseDate('2019-01-00')).to.be.undefined
-      expect(parseDate('2019-01-32')).to.be.undefined
+      assert.strictEqual(parseDate('2019-01-00'), undefined)
+      assert.strictEqual(parseDate('2019-01-32'), undefined)
     })
 
     it('handles leap years', function () {
-      expect(parseDate('2020-02-29')).to.deep.equal({
+      assert.deepStrictEqual(parseDate('2020-02-29'), {
         year: 2020,
         month: 1,
         day: 29
       })
-      expect(parseDate('2019-02-29')).to.be.undefined
+      assert.strictEqual(parseDate('2019-02-29'), undefined)
     })
 
     it('does not parse invalid inputs', function () {
-      expect(parseDate('2019.01.30')).to.be.undefined
-      expect(parseDate('3247abc')).to.be.undefined
-      expect(parseDate('')).to.be.undefined
-      expect(parseDate('.')).to.be.undefined
-      expect(parseDate('--')).to.be.undefined
+      assert.strictEqual(parseDate('2019.01.30'), undefined)
+      assert.strictEqual(parseDate('3247abc'), undefined)
+      assert.strictEqual(parseDate(''), undefined)
+      assert.strictEqual(parseDate('.'), undefined)
+      assert.strictEqual(parseDate('--'), undefined)
     })
   })
 })
