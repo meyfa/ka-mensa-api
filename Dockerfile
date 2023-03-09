@@ -17,7 +17,8 @@ WORKDIR /usr/src/app
 
 # install PRODUCTION dependencies
 COPY package*.json ./
-RUN npm ci --omit=dev
+RUN npm ci --omit=dev \
+  && apk add --no-cache tini
 
 # add the already compiled code
 COPY --from=build /usr/src/app/dist dist
@@ -25,6 +26,6 @@ COPY --from=build /usr/src/app/dist dist
 # we listen on :8080 by default
 EXPOSE 8080
 
-# start the server (this is similar to "npm run production", but NPM does not
-# forward signals correctly, while Node does)
+# use tini as init process since Node.js isn't designed to be run as PID 1
+ENTRYPOINT ["/sbin/tini", "--"]
 CMD ["node", "dist/server.js"]
