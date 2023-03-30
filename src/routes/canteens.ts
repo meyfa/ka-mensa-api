@@ -10,7 +10,9 @@ import { sendResult } from '../response.js'
 export const canteensRoute = (): FastifyPluginAsync => async (app) => {
   const controller = new CanteensController()
 
-  app.get('/', async () => await controller.getAll())
+  app.get('/', async (req, reply) => {
+    await sendResult(reply, await controller.getAll())
+  })
 
   app.get<{ Params: { canteenId: string } }>('/:canteenId', async (req, reply) => {
     await sendResult(reply, await controller.getOne(req.params.canteenId))
