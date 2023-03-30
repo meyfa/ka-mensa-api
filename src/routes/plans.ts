@@ -1,23 +1,23 @@
-import { Request, Router } from 'express'
 import { DateSpec, canteens } from 'ka-mensa-fetch'
 import { Cache } from '../cache.js'
 import { parseDate } from '../util/date-format.js'
 import { PlansController } from '../controllers/plans-controller.js'
-import { createHandler } from '../create-handler.js'
 import { BadRequestError } from '../errors.js'
 import { parseCommaFilter } from '../util/parse-comma-filter.js'
+import { FastifyPluginAsync } from 'fastify'
+import { sendResult } from '../response.js'
 
 const CANTEEN_IDS = canteens.map(({ id }) => id)
 
 /**
- * Retrieve and parse the 'date' parameter from the given request.
+ * Retrieve and parse the 'date' parameter from a request.
  * An ApiError is thrown if the parameter is invalid.
  *
- * @param req The request.
+ * @param dateParam The raw date parameter.
  * @returns The parsed date.
  */
-function getRequestDate (req: Request): DateSpec {
-  const date = parseDate(req.params.date)
+function getRequestDate (dateParam: string): DateSpec {
+  const date = parseDate(dateParam)
   if (date == null) {
     throw new BadRequestError('malformed date')
   }
@@ -28,15 +28,16 @@ function getRequestDate (req: Request): DateSpec {
  * Retrieve and parse the 'canteens' comma-delimited request parameter.
  * An ApiError is thrown if the parameter is invalid.
  *
- * @param req The request.
+ * @param query The request query.
+ * @param query.canteens The raw canteens filter.
  * @returns The parsed canteens filter.
  */
-function getCanteensFilter (req: Request): string[] | undefined {
-  if (req.query.canteens == null) {
+function getCanteensFilter (query: { canteens: string | string[] }): string[] | undefined {
+  if (query.canteens == null) {
     return undefined
   }
-  const canteensFilter = typeof req.query.canteens === 'string'
-    ? parseCommaFilter(req.query.canteens, CANTEEN_IDS)
+  const canteensFilter = typeof query.canteens === 'string'
+    ? parseCommaFilter(query.canteens, CANTEEN_IDS)
     : undefined
   if (canteensFilter == null) {
     throw new BadRequestError('invalid filter: canteens')
@@ -45,21 +46,20 @@ function getCanteensFilter (req: Request): string[] | undefined {
 }
 
 /**
- * Create the router for retrieving plan information.
+ * Create the routes for retrieving plan information.
  *
  * @param cache The cache object.
- * @returns The router object.
+ * @returns A Fastify plugin.
  */
-export function plansRoute (cache: Cache): Router {
+export const plansRoute = (cache: Cache): FastifyPluginAsync => async (app) => {
   const controller = new PlansController(cache)
 
-  const router = Router()
+  app.get('/', async () => await controller.getSummaries())
 
-  router.get('/', createHandler(async () => await controller.getSummaries()))
-
-  router.get('/:date(\\d{4}-\\d{2}-\\d{2})', createHandler(async (req: Request) => {
-    return await controller.getPlan(getRequestDate(req), getCanteensFilter(req))
-  }))
-
-  return router
+  app.get<{
+    Params: { date: string }
+    Querystring: { canteens: string | string[] }
+  }>('/:date(\\d{4}-\\d{2}-\\d{2})', async (req, reply) => {
+    await sendResult(reply, await controller.getPlan(getRequestDate(req.params.date), getCanteensFilter(req.query)))
+  })
 }

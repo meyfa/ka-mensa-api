@@ -1,16 +1,21 @@
-import express from 'express'
+import fastify from 'fastify'
+import cors from '@fastify/cors'
 import ms from 'ms'
-import cors from 'cors'
 import { DirectoryAdapter } from 'fs-adapters'
 import config from './config.js'
 import { Cache } from './cache.js'
 import { runFetchJob } from './job.js'
-import { indexRoute } from './routes/index.js'
 import { logger } from './logger.js'
-import { onTermination, promisifiedClose, promisifiedListen } from 'omniwheel'
+import { onTermination } from 'omniwheel'
 import { fixupCache } from './fixup.js'
 import { formatDate } from './util/date-format.js'
 import path from 'node:path'
+import { sendError } from './response.js'
+import { ApiError, BadRequestError, InternalServerError, NotFoundError } from './errors.js'
+import { defaultRoute } from './routes/default.js'
+import { metaRoute } from './routes/meta/index.js'
+import { canteensRoute } from './routes/canteens.js'
+import { plansRoute } from './routes/plans.js'
 
 const FIXUP_DRY_RUN = false
 const DEFAULT_CACHE_DIRECTORY = path.resolve('./cache')
@@ -77,20 +82,45 @@ async function startFetchJob (cache: Cache): Promise<void> {
  * @param cache The plan cache to use.
  */
 async function startServer (cache: Cache): Promise<void> {
-  const app = express()
+  const app = fastify()
+
+  // CORS
   const allowOrigin = getAllowOrigin()
   if (allowOrigin != null) {
-    app.use(cors({ origin: allowOrigin }))
+    await app.register(cors, { origin: allowOrigin })
   }
-  app.use(config.server.base, indexRoute(cache))
+
+  // error handling
+  app.setErrorHandler(async (error, req, reply) => {
+    if (error instanceof SyntaxError && error.statusCode != null && error.statusCode >= 400 && error.statusCode < 500) {
+      // JSON input error
+      return await sendError(reply, new BadRequestError('malformed input'))
+    } else if (error instanceof ApiError) {
+      // one of our own errors
+      return await sendError(reply, error)
+    } else {
+      logger.error(error)
+      return await sendError(reply, new InternalServerError())
+    }
+  })
+
+  // routes
+  await app.register(defaultRoute(), { prefix: '/' })
+  await app.register(metaRoute(), { prefix: '/meta' })
+  await app.register(canteensRoute(), { prefix: '/canteens' })
+  await app.register(plansRoute(cache), { prefix: '/plans' })
+
+  // 404 fallback
+  app.all('/*', async (req, reply) => reply.callNotFound())
+  app.setNotFoundHandler(async (req, reply) => await sendError(reply, new NotFoundError('route')))
 
   const port = config.server.port
   const host = config.server.host
-  const server = await promisifiedListen(app, port, host)
+  await app.listen({ port, host })
 
   logger.info(`Server listening on :${port}`)
 
-  onTermination(async () => await promisifiedClose(server))
+  onTermination(async () => await app.close())
 }
 
 /**
@@ -110,4 +140,4 @@ async function main (): Promise<void> {
   await startServer(cache)
 }
 
-void main()
+await main()

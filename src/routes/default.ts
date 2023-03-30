@@ -1,15 +1,13 @@
-import { Router } from 'express'
-import { Cache } from '../cache.js'
-import { createHandler } from '../create-handler.js'
+import { FastifyPluginAsync } from 'fastify'
+import { sendResult } from '../response.js'
 
 /**
- * Create the router for retrieving API status information.
+ * Create the routes for retrieving API status information.
  *
- * @param cache The cache object.
- * @returns The router object.
+ * @returns A Fastify plugin.
  */
-export function defaultRoute (cache: Cache): Router {
-  const router = Router()
-  router.get('/', createHandler(() => ({})))
-  return router
+export const defaultRoute = (): FastifyPluginAsync => async (app) => {
+  app.get('/', async (req, reply) => {
+    await sendResult(reply, {})
+  })
 }

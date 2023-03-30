@@ -1,20 +1,16 @@
-import { Router } from 'express'
-import { Cache } from '../../cache.js'
 import { LegendController } from '../../controllers/legend-controller.js'
-import { createHandler } from '../../create-handler.js'
+import { FastifyPluginAsync } from 'fastify'
+import { sendResult } from '../../response.js'
 
 /**
- * Create the router for retrieving legend meta information.
+ * Create the routes for retrieving legend meta information.
  *
- * @param cache The cache object.
- * @returns The router object.
+ * @returns A Fastify plugin.
  */
-export function legendRoute (cache: Cache): Router {
+export const legendRoute = (): FastifyPluginAsync => async (app) => {
   const controller = new LegendController()
 
-  const router = Router()
-
-  router.get('/', createHandler(async () => await controller.getLegend()))
-
-  return router
+  app.get('/', async (req, reply) => {
+    await sendResult(reply, await controller.getLegend())
+  })
 }

@@ -1,32 +1,26 @@
-import { Request, Router } from 'express'
-import { Cache } from '../cache.js'
 import { CanteensController } from '../controllers/canteens-controller.js'
-import { createHandler } from '../create-handler.js'
+import { FastifyPluginAsync } from 'fastify'
+import { sendResult } from '../response.js'
 
 /**
- * Create the router for retrieving canteen information.
+ * Create the routes for retrieving canteen information.
  *
- * @param cache The cache object.
- * @returns The router object.
+ * @returns A Fastify plugin.
  */
-export function canteensRoute (cache: Cache): Router {
+export const canteensRoute = (): FastifyPluginAsync => async (app) => {
   const controller = new CanteensController()
 
-  const router = Router()
+  app.get('/', async () => await controller.getAll())
 
-  router.get('/', createHandler(async () => await controller.getAll()))
+  app.get<{ Params: { canteenId: string } }>('/:canteenId', async (req, reply) => {
+    await sendResult(reply, await controller.getOne(req.params.canteenId))
+  })
 
-  router.get('/:canteenId', createHandler(async (req: Request) => {
-    return await controller.getOne(req.params.canteenId)
-  }))
+  app.get<{ Params: { canteenId: string } }>('/:canteenId/lines', async (req, reply) => {
+    await sendResult(reply, await controller.getLines(req.params.canteenId))
+  })
 
-  router.get('/:canteenId/lines', createHandler(async (req: Request) => {
-    return await controller.getLines(req.params.canteenId)
-  }))
-
-  router.get('/:canteenId/lines/:lineId', createHandler(async (req: Request) => {
-    return await controller.getLine(req.params.canteenId, req.params.lineId)
-  }))
-
-  return router
+  app.get<{ Params: { canteenId: string, lineId: string } }>('/:canteenId/lines/:lineId', async (req, reply) => {
+    await sendResult(reply, await controller.getLine(req.params.canteenId, req.params.lineId))
+  })
 }

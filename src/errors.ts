@@ -1,3 +1,5 @@
+import { HttpStatus } from 'omniwheel'
+
 /**
  * A special type of error that is intentionally thrown by the API.
  * It includes an HTTP status code and a message string.
@@ -19,7 +21,7 @@ export class ApiError extends Error {
  */
 export class BadRequestError extends ApiError {
   constructor (message: string) {
-    super(400, message)
+    super(HttpStatus.BAD_REQUEST, message)
   }
 }
 
@@ -28,6 +30,14 @@ export class BadRequestError extends ApiError {
  */
 export class NotFoundError extends ApiError {
   constructor (object: string) {
-    super(404, `${object} not found`)
+    super(HttpStatus.NOT_FOUND, `${object} not found`)
+  }
+}
+/**
+ * An ApiError to be thrown in case something goes wrong on the server.
+ */
+export class InternalServerError extends ApiError {
+  constructor () {
+    super(HttpStatus.INTERNAL_SERVER_ERROR, 'internal_server_error')
   }
 }
