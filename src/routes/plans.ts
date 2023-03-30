@@ -54,7 +54,9 @@ function getCanteensFilter (query: { canteens: string | string[] }): string[] | 
 export const plansRoute = (cache: Cache): FastifyPluginAsync => async (app) => {
   const controller = new PlansController(cache)
 
-  app.get('/', async () => await controller.getSummaries())
+  app.get('/', async (req, reply) => {
+    await sendResult(reply, await controller.getSummaries())
+  })
 
   app.get<{
     Params: { date: string }
