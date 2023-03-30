@@ -103,16 +103,13 @@ async function startServer (cache: Cache): Promise<void> {
       return await sendError(reply, new InternalServerError())
     }
   })
+  app.setNotFoundHandler(async (req, reply) => await sendError(reply, new NotFoundError('route')))
 
   // routes
   await app.register(defaultRoute(), { prefix: '/' })
   await app.register(metaRoute(), { prefix: '/meta' })
   await app.register(canteensRoute(), { prefix: '/canteens' })
   await app.register(plansRoute(cache), { prefix: '/plans' })
-
-  // 404 fallback
-  app.all('/*', async (req, reply) => reply.callNotFound())
-  app.setNotFoundHandler(async (req, reply) => await sendError(reply, new NotFoundError('route')))
 
   const port = config.server.port
   const host = config.server.host
