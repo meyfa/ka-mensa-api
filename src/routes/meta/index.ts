@@ -1,17 +1,11 @@
-import { Router } from 'express'
-import { Cache } from '../../cache.js'
 import { legendRoute } from './legend.js'
+import { FastifyPluginAsync } from 'fastify'
 
 /**
- * Create the router that combines meta information routes.
+ * Create the route that combines meta information routes.
  *
- * @param cache The cache object.
- * @returns The router object.
+ * @returns A Fastify plugin.
  */
-export function metaRoute (cache: Cache): Router {
-  const router = Router()
-
-  router.use('/legend', legendRoute(cache))
-
-  return router
+export const metaRoute = (): FastifyPluginAsync => async (app) => {
+  await app.register(legendRoute(), { prefix: '/legend' })
 }
