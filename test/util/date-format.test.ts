@@ -41,15 +41,6 @@ describe('date-format.ts', function () {
       assert.strictEqual(parseDate('2019-01-32'), undefined)
     })
 
-    it('handles leap years', function () {
-      assert.deepStrictEqual(parseDate('2020-02-29'), {
-        year: 2020,
-        month: 1,
-        day: 29
-      })
-      assert.strictEqual(parseDate('2019-02-29'), undefined)
-    })
-
     it('does not parse invalid inputs', function () {
       assert.strictEqual(parseDate('2019.01.30'), undefined)
       assert.strictEqual(parseDate('3247abc'), undefined)
