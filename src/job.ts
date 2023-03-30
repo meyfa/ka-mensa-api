@@ -6,6 +6,7 @@ import config from './config.js'
 import { getSessionCookie } from './get-session-cookie.js'
 import { Cache } from './cache.js'
 import { logger } from './logger.js'
+import { formatDate } from './util/date-format.js'
 
 /**
  * Maximum age of a plan that is still considered valid for caching. If a plan
@@ -108,17 +109,17 @@ export async function runFetchJob (cache: Cache): Promise<void> {
   const now = moment()
 
   // for each date: add respective plans array to cache
-  for (const [date, plansForDate] of group(plans).by('date').asTuples()) {
+  for (const [date, plansForDate] of group(plans).by((plan) => plan.date).asTuples()) {
+    const formattedDate = formatDate(date)
+
     // check for invalid date
     if (now.diff(date) > PLAN_AGE_MAXIMUM) {
-      const formattedDate: string = moment(date).format('YYYY-MM-DD')
       logger.warn(`data for ${formattedDate} will not be stored due to its age`)
       continue
     }
 
-    const dateString = moment(date).format('YYYY-MM-DD')
     const canteensList = plansForDate.map(plan => plan.id).join(',')
-    logger.info(`caching ${dateString} with ${plansForDate.length} canteens: [${canteensList}]`)
+    logger.info(`caching ${formattedDate} with ${plansForDate.length} canteens: [${canteensList}]`)
 
     await cache.put(date, plansForDate)
   }
