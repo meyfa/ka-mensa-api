@@ -34,11 +34,27 @@ describe('date-format.ts', function () {
     it('limits month', function () {
       assert.strictEqual(parseDate('2019-00-01'), undefined)
       assert.strictEqual(parseDate('2019-13-01'), undefined)
+      // check all values in between are allowed
+      for (let month = 1; month <= 12; ++month) {
+        assert.deepStrictEqual(parseDate('2019-' + `${month}`.padStart(2, '0') + '-01'), {
+          year: 2019,
+          month: month - 1,
+          day: 1
+        })
+      }
     })
 
     it('limits day', function () {
       assert.strictEqual(parseDate('2019-01-00'), undefined)
       assert.strictEqual(parseDate('2019-01-32'), undefined)
+      // check all values in between are allowed
+      for (let day = 1; day <= 31; ++day) {
+        assert.deepStrictEqual(parseDate('2019-01-' + `${day}`.padStart(2, '0')), {
+          year: 2019,
+          month: 0,
+          day
+        })
+      }
     })
 
     it('does not parse invalid inputs', function () {

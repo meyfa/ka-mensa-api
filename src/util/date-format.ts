@@ -19,7 +19,7 @@ export function formatDate (date: DateSpec): string {
 export function parseDate (str: string): DateSpec | undefined {
   // This doesn't care about some aspects of the date, like leap years.
   // That's not a problem for our use-case.
-  const match = str.match(/^(\d{4})-(0[1-9]|1[012])-([012][1-9]|3[01])$/)
+  const match = str.match(/^(\d{4})-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$/)
   if (match == null) {
     return undefined
   }
