@@ -5,6 +5,7 @@ import assert from 'node:assert'
 import { HttpStatus } from 'omniwheel'
 import { FastifyInstance, LightMyRequestResponse } from 'fastify'
 import { canteens } from 'ka-mensa-fetch'
+import winston from 'winston'
 
 const route = '/plans'
 
@@ -14,7 +15,7 @@ describe(`route: ${route}`, function () {
 
   it('returns expected data (empty cache)', async function () {
     const cache = new Cache(new MemoryAdapter())
-    fastify = await startServer(cache, {})
+    fastify = await startServer(winston.createLogger({ silent: true }), cache, {})
     const response = await fastify.inject({ path: route })
     assert.strictEqual(response.statusCode, HttpStatus.OK)
     assert.deepStrictEqual(response.json(), {
@@ -29,7 +30,7 @@ describe(`route: ${route}`, function () {
     await cache.put({ year: 2023, month: 2, day: 13 }, [])
     await cache.put({ year: 2023, month: 2, day: 14 }, [])
     await cache.put({ year: 2023, month: 3, day: 3 }, [])
-    fastify = await startServer(cache, {})
+    fastify = await startServer(winston.createLogger({ silent: true }), cache, {})
     const response = await fastify.inject({ path: route })
     assert.strictEqual(response.statusCode, HttpStatus.OK)
     assert.deepStrictEqual(response.json(), {
@@ -50,7 +51,7 @@ describe(`route: ${route}/{date}`, function () {
 
   it('disallows non-date paths', async function () {
     const cache = new Cache(new MemoryAdapter())
-    fastify = await startServer(cache, {})
+    fastify = await startServer(winston.createLogger({ silent: true }), cache, {})
     for (const input of ['foo', '2021-02-17T12:00:00Z', '--', 'YYYY-MM-DD']) {
       const response: LightMyRequestResponse = await fastify.inject({ path: `${route}/${input}` })
       assert.strictEqual(response.statusCode, HttpStatus.NOT_FOUND, `input: ${input}`)
@@ -70,7 +71,7 @@ describe(`route: ${route}/{date}`, function () {
   it('returns 404 for non-cached dates', async function () {
     const cache = new Cache(new MemoryAdapter())
     await cache.put({ year: 2023, month: 2, day: 13 }, [])
-    fastify = await startServer(cache, {})
+    fastify = await startServer(winston.createLogger({ silent: true }), cache, {})
     const response = await fastify.inject({ path: `${route}/2023-03-15` })
     assert.strictEqual(response.statusCode, HttpStatus.NOT_FOUND)
     assert.deepStrictEqual(response.json(), {
@@ -100,7 +101,7 @@ describe(`route: ${route}/{date}`, function () {
         }))
       }
     ])
-    fastify = await startServer(cache, {})
+    fastify = await startServer(winston.createLogger({ silent: true }), cache, {})
     const response1 = await fastify.inject({ path: `${route}/2023-03-13` })
     assert.strictEqual(response1.statusCode, HttpStatus.OK)
     assert.deepStrictEqual(response1.json(), {
@@ -138,7 +139,7 @@ describe(`route: ${route}/{date}`, function () {
 
   it('disallows invalid canteen filters', async function () {
     const cache = new Cache(new MemoryAdapter())
-    fastify = await startServer(cache, {})
+    fastify = await startServer(winston.createLogger({ silent: true }), cache, {})
     for (const input of ['', 'foo', ',adenauerring', 'adenauerring,', 'foo bar']) {
       const response: LightMyRequestResponse = await fastify.inject({
         path: `${route}/2023-03-15`,
@@ -173,7 +174,7 @@ describe(`route: ${route}/{date}`, function () {
         lines: []
       }
     ])
-    fastify = await startServer(cache, {})
+    fastify = await startServer(winston.createLogger({ silent: true }), cache, {})
     // empty plan, but with a canteen filter
     const response1 = await fastify.inject({
       path: `${route}/2023-03-13`,

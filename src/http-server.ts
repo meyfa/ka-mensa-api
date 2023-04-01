@@ -1,5 +1,4 @@
 import { onTermination } from 'omniwheel'
-import { logger } from './logger.js'
 import config from './config.js'
 import { Cache } from './cache.js'
 import fastify, { FastifyInstance } from 'fastify'
@@ -10,6 +9,7 @@ import { defaultRoute } from './routes/default.js'
 import { metaRoute } from './routes/meta/index.js'
 import { canteensRoute } from './routes/canteens.js'
 import { plansRoute } from './routes/plans.js'
+import { Logger } from 'winston'
 
 /**
  * Options for the HTTP server.
@@ -21,11 +21,12 @@ export interface HttpServerOptions {
 /**
  * Start the web server.
  *
+ * @param logger The logger to use.
  * @param cache The plan cache to use.
  * @param options Options for the HTTP server.
  * @returns The Fastify instance.
  */
-export async function startServer (cache: Cache, options: HttpServerOptions): Promise<FastifyInstance> {
+export async function startServer (logger: Logger, cache: Cache, options: HttpServerOptions): Promise<FastifyInstance> {
   const app = fastify()
 
   // CORS

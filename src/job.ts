@@ -5,8 +5,8 @@ import ms from 'ms'
 import config from './config.js'
 import { getSessionCookie } from './get-session-cookie.js'
 import { Cache } from './cache.js'
-import { logger } from './logger.js'
 import { formatDate } from './util/date-format.js'
+import { Logger } from 'winston'
 
 /**
  * Maximum age of a plan that is still considered valid for caching. If a plan
@@ -92,9 +92,10 @@ async function fetchFromSource (source: string): Promise<CanteenPlan[]> {
  * fetch a sufficient amount of plans, so that when this is called regularly
  * there will be no gaps.
  *
+ * @param logger The logger instance.
  * @param cache The cache instance.
  */
-export async function runFetchJob (cache: Cache): Promise<void> {
+export async function runFetchJob (logger: Logger, cache: Cache): Promise<void> {
   const source = config.fetchJob.source
   logger.info(`fetching plans (source=${source})`)
 

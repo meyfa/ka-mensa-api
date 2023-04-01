@@ -3,12 +3,12 @@ import { DirectoryAdapter } from 'fs-adapters'
 import config from './config.js'
 import { Cache } from './cache.js'
 import { runFetchJob } from './job.js'
-import { logger } from './logger.js'
 import { onTermination } from 'omniwheel'
 import { fixupCache } from './fixup.js'
 import { formatDate } from './util/date-format.js'
 import path from 'node:path'
 import { startServer } from './http-server.js'
+import winston from 'winston'
 
 const FIXUP_DRY_RUN = false
 const DEFAULT_CACHE_DIRECTORY = path.resolve('./cache')
@@ -40,6 +40,23 @@ function getAllowOrigin (): string | undefined {
 }
 
 /**
+ * The global logger instance.
+ */
+export const logger = winston.createLogger({
+  level: 'info',
+  format: winston.format.combine(
+    winston.format.timestamp(),
+    winston.format.printf((info) => {
+      const { timestamp, level, message } = info as { timestamp: string, level: string, message: string }
+      return `${timestamp} ${level}: ${message}`
+    })
+  ),
+  transports: [
+    new winston.transports.Console()
+  ]
+})
+
+/**
  * Perform a full fixup on the given cache. This fills in missing data that might have been missing at cache time but
  * is now inferrable due to an updated data set.
  *
@@ -61,9 +78,9 @@ async function startFetchJob (cache: Cache): Promise<void> {
   const period = ms(config.fetchJob.interval)
 
   // run the job once immediately, and then repeatedly
-  await runFetchJob(cache)
+  await runFetchJob(logger, cache)
   const interval = setInterval(() => {
-    void runFetchJob(cache)
+    void runFetchJob(logger, cache)
   }, period)
 
   onTermination(() => clearInterval(interval))
@@ -83,7 +100,7 @@ async function main (): Promise<void> {
 
   await fixupCachedFiles(cache)
   await startFetchJob(cache)
-  await startServer(cache, { allowOrigin: getAllowOrigin() })
+  await startServer(logger, cache, { allowOrigin: getAllowOrigin() })
 }
 
 await main()

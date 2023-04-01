@@ -5,6 +5,7 @@ import assert from 'node:assert'
 import { HttpStatus } from 'omniwheel'
 import { canteens } from 'ka-mensa-fetch'
 import { FastifyInstance } from 'fastify'
+import winston from 'winston'
 
 const route = '/canteens'
 
@@ -14,7 +15,7 @@ describe(`route: ${route}`, function () {
 
   it('returns expected data', async function () {
     const cache = new Cache(new MemoryAdapter())
-    fastify = await startServer(cache, {})
+    fastify = await startServer(winston.createLogger({ silent: true }), cache, {})
     const response = await fastify.inject({ path: route })
     assert.strictEqual(response.statusCode, HttpStatus.OK)
     assert.deepStrictEqual(response.json(), {
@@ -30,7 +31,7 @@ describe(`route: ${route}/{canteenId}`, function () {
 
   it('returns 404 for unknown canteen', async function () {
     const cache = new Cache(new MemoryAdapter())
-    fastify = await startServer(cache, {})
+    fastify = await startServer(winston.createLogger({ silent: true }), cache, {})
     const response = await fastify.inject({ path: `${route}/foo` })
     assert.strictEqual(response.statusCode, HttpStatus.NOT_FOUND)
     assert.deepStrictEqual(response.json(), {
@@ -40,7 +41,7 @@ describe(`route: ${route}/{canteenId}`, function () {
 
   it('returns the canteen data for known canteen', async function () {
     const cache = new Cache(new MemoryAdapter())
-    fastify = await startServer(cache, {})
+    fastify = await startServer(winston.createLogger({ silent: true }), cache, {})
     const response = await fastify.inject({ path: `${route}/adenauerring` })
     assert.strictEqual(response.statusCode, HttpStatus.OK)
     assert.deepStrictEqual(response.json(), {
@@ -56,7 +57,7 @@ describe(`route: ${route}/{canteenId}/lines`, function () {
 
   it('returns 404 for unknown canteen', async function () {
     const cache = new Cache(new MemoryAdapter())
-    fastify = await startServer(cache, {})
+    fastify = await startServer(winston.createLogger({ silent: true }), cache, {})
     const response = await fastify.inject({ path: `${route}/foo/lines` })
     assert.strictEqual(response.statusCode, HttpStatus.NOT_FOUND)
     assert.deepStrictEqual(response.json(), {
@@ -66,7 +67,7 @@ describe(`route: ${route}/{canteenId}/lines`, function () {
 
   it('returns the canteen line data for known canteen', async function () {
     const cache = new Cache(new MemoryAdapter())
-    fastify = await startServer(cache, {})
+    fastify = await startServer(winston.createLogger({ silent: true }), cache, {})
     const response = await fastify.inject({ path: `${route}/adenauerring/lines` })
     assert.strictEqual(response.statusCode, HttpStatus.OK)
     assert.deepStrictEqual(response.json(), {
@@ -82,7 +83,7 @@ describe(`route: ${route}/{canteenId}/lines/{lineId}`, function () {
 
   it('returns 404 for unknown canteen or unknown line', async function () {
     const cache = new Cache(new MemoryAdapter())
-    fastify = await startServer(cache, {})
+    fastify = await startServer(winston.createLogger({ silent: true }), cache, {})
     const response1 = await fastify.inject({ path: `${route}/foo/lines/l1` })
     assert.strictEqual(response1.statusCode, HttpStatus.NOT_FOUND)
     assert.deepStrictEqual(response1.json(), {
@@ -97,7 +98,7 @@ describe(`route: ${route}/{canteenId}/lines/{lineId}`, function () {
 
   it('returns the canteen line data for known canteen line', async function () {
     const cache = new Cache(new MemoryAdapter())
-    fastify = await startServer(cache, {})
+    fastify = await startServer(winston.createLogger({ silent: true }), cache, {})
     const response = await fastify.inject({ path: `${route}/adenauerring/lines/l1` })
     assert.strictEqual(response.statusCode, HttpStatus.OK)
     assert.deepStrictEqual(response.json(), {
