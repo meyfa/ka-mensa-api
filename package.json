@@ -50,7 +50,7 @@
     "@types/ms": "0.7.31",
     "@types/node": "18.15.11",
     "c8": "7.13.0",
-    "eslint": "8.42.0",
+    "eslint": "8.43.0",
     "eslint-plugin-jsdoc": "43.0.6",
     "mocha": "10.2.0",
     "ts-node": "10.9.1",
