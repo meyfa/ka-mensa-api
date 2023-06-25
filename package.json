@@ -31,7 +31,7 @@
   },
   "homepage": "https://github.com/meyfa/ka-mensa-api",
   "engines": {
-    "node": ">=18.0.0"
+    "node": ">=18.16.1"
   },
   "dependencies": {
     "@fastify/cors": "8.3.0",
