@@ -37,7 +37,7 @@
     "@fastify/cors": "8.3.0",
     "fastify": "4.18.0",
     "fs-adapters": "7.0.0",
-    "group-items": "2.2.1",
+    "group-items": "3.0.0",
     "ka-mensa-fetch": "3.2.0",
     "moment": "2.29.4",
     "ms": "2.1.3",
