@@ -42,7 +42,7 @@
     "moment": "2.29.4",
     "ms": "2.1.3",
     "omniwheel": "0.4.0",
-    "winston": "3.9.0"
+    "winston": "3.10.0"
   },
   "devDependencies": {
     "@meyfa/eslint-config": "3.0.1",
