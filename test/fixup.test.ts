@@ -12,7 +12,7 @@ class TestMemoryAdapter extends MemoryAdapter {
 
   override async write (fileName: string, data: Buffer | string, options?: ReadWriteOptions): Promise<void> {
     this.writeOperations.push(fileName)
-    return await super.write(fileName, data, options)
+    await super.write(fileName, data, options)
   }
 }
 
