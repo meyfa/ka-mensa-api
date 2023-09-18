@@ -24,8 +24,8 @@ export function parseDate (str: string): DateSpec | undefined {
     return undefined
   }
   return {
-    year: parseInt(match[1], 10),
-    month: parseInt(match[2], 10) - 1,
-    day: parseInt(match[3], 10)
+    year: Number.parseInt(match[1], 10),
+    month: Number.parseInt(match[2], 10) - 1,
+    day: Number.parseInt(match[3], 10)
   }
 }

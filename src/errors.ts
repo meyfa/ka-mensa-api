@@ -12,6 +12,7 @@ export class ApiError extends Error {
 
   constructor (code: number, message: string) {
     super(message)
+    this.name = 'ApiError'
     this.code = code
   }
 }
@@ -22,6 +23,7 @@ export class ApiError extends Error {
 export class BadRequestError extends ApiError {
   constructor (message: string) {
     super(HttpStatus.BAD_REQUEST, message)
+    this.name = 'BadRequestError'
   }
 }
 
@@ -31,6 +33,7 @@ export class BadRequestError extends ApiError {
 export class NotFoundError extends ApiError {
   constructor (object: string) {
     super(HttpStatus.NOT_FOUND, `${object} not found`)
+    this.name = 'NotFoundError'
   }
 }
 /**
@@ -39,5 +42,6 @@ export class NotFoundError extends ApiError {
 export class InternalServerError extends ApiError {
   constructor () {
     super(HttpStatus.INTERNAL_SERVER_ERROR, 'internal_server_error')
+    this.name = 'InternalServerError'
   }
 }
