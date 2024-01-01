@@ -34,7 +34,7 @@
     "node": ">=18.16.1"
   },
   "dependencies": {
-    "@fastify/cors": "8.4.1",
+    "@fastify/cors": "8.5.0",
     "fastify": "4.25.2",
     "fs-adapters": "7.0.2",
     "group-items": "4.0.0",
