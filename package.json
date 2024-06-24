@@ -46,13 +46,13 @@
   },
   "devDependencies": {
     "@meyfa/eslint-config": "5.1.0",
-    "@types/mocha": "10.0.6",
+    "@types/mocha": "10.0.7",
     "@types/ms": "0.7.34",
     "@types/node": "20.12.7",
     "c8": "9.1.0",
     "eslint": "8.57.0",
     "eslint-plugin-jsdoc": "48.2.3",
-    "mocha": "10.4.0",
+    "mocha": "10.5.0",
     "ts-node": "10.9.2",
     "typescript": "5.5.2"
   }
