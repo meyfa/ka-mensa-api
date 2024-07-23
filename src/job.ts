@@ -2,7 +2,7 @@ import { CanteenPlan, DateSpec, fetchMensa } from 'ka-mensa-fetch'
 import { group } from 'group-items'
 import moment from 'moment'
 import ms from 'ms'
-import config from './config.js'
+import { Config } from './config.js'
 import { getSessionCookie } from './get-session-cookie.js'
 import { Cache } from './cache.js'
 import { formatDate } from './util/date-format.js'
@@ -44,10 +44,11 @@ function getFetchDates (dayCount: number): DateSpec[] {
  * Use the simplesite source to fetch plans for all canteens, for a few days into
  * the future as defined in the config.
  *
+ * @param config The application config.
  * @returns Resolves to the fetched plan set.
  */
-async function fetchFromSimpleSite (): Promise<CanteenPlan[]> {
-  const dayCount = Math.max(config.fetchJob.simplesiteOptions.futureDays, 0)
+async function fetchFromSimpleSite (config: Config): Promise<CanteenPlan[]> {
+  const dayCount = Math.max(config.simplesite.days, 0)
   const dates = getFetchDates(dayCount)
   const sessionCookie = await getSessionCookie()
 
@@ -57,13 +58,14 @@ async function fetchFromSimpleSite (): Promise<CanteenPlan[]> {
 /**
  * Use the jsonapi source to fetch the currently available plans.
  *
+ * @param config The application config.
  * @returns Resolves to the fetched plan set.
  */
-async function fetchFromJsonApi (): Promise<CanteenPlan[]> {
+async function fetchFromJsonApi (config: Config): Promise<CanteenPlan[]> {
   return await fetchMensa('jsonapi', {
     auth: {
-      user: config.fetchJob.jsonapiOptions.auth.user,
-      password: config.fetchJob.jsonapiOptions.auth.password
+      user: config.jsonapi.auth.username,
+      password: config.jsonapi.auth.password
     }
   })
 }
@@ -72,15 +74,16 @@ async function fetchFromJsonApi (): Promise<CanteenPlan[]> {
  * Use the specified string to determine from which source plans should be
  * fetched, and fetch them.
  *
+ * @param config The application config.
  * @param source The source to use ('simplesite' / 'jsonapi').
  * @returns Resolves to the fetched plan set.
  */
-async function fetchFromSource (source: string): Promise<CanteenPlan[]> {
+async function fetchFromSource (config: Config, source: string): Promise<CanteenPlan[]> {
   switch (source) {
     case 'jsonapi':
-      return await fetchFromJsonApi()
+      return await fetchFromJsonApi(config)
     case 'simplesite':
-      return await fetchFromSimpleSite()
+      return await fetchFromSimpleSite(config)
   }
   throw new Error('invalid source setting')
 }
@@ -92,16 +95,17 @@ async function fetchFromSource (source: string): Promise<CanteenPlan[]> {
  * fetch a sufficient amount of plans, so that when this is called regularly
  * there will be no gaps.
  *
+ * @param config The application config.
  * @param logger The logger instance.
  * @param cache The cache instance.
  */
-export async function runFetchJob (logger: Logger, cache: Cache): Promise<void> {
-  const source = config.fetchJob.source
+export async function runFetchJob (config: Config, logger: Logger, cache: Cache): Promise<void> {
+  const source = config.fetch.source
   logger.info(`fetching plans (source=${source})`)
 
   let plans
   try {
-    plans = await fetchFromSource(source)
+    plans = await fetchFromSource(config, source)
   } catch (e) {
     logger.error(e)
     return

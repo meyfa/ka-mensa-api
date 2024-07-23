@@ -1,43 +1,14 @@
-import ms from 'ms'
 import { DirectoryAdapter } from 'fs-adapters'
-import config from './config.js'
+import { Config, getConfig } from './config.js'
 import { Cache } from './cache.js'
 import { runFetchJob } from './job.js'
 import { onTermination } from 'omniwheel'
 import { fixupCache } from './fixup.js'
 import { formatDate } from './util/date-format.js'
-import path from 'node:path'
 import { startServer } from './http-server.js'
 import winston from 'winston'
 
 const FIXUP_DRY_RUN = false
-const DEFAULT_CACHE_DIRECTORY = path.resolve('./cache')
-
-/**
- * Determine the absolute path to the cache directory from the environment variables. This will fall back to a default
- * cache path if the env var is not set.
- *
- * @returns The absolute cache directory path to use.
- */
-function getCacheDirectory (): string {
-  const directory = process.env.MENSA_CACHE_DIRECTORY
-  return directory != null && directory !== ''
-    ? path.resolve(directory)
-    : DEFAULT_CACHE_DIRECTORY
-}
-
-/**
- * Determine the CORS origin to allow from the environment variables.
- * This function will return a string if (and only if) the option is set and is not empty.
- *
- * @returns The origin value, if it is valid, and undefined otherwise.
- */
-function getAllowOrigin (): string | undefined {
-  const allowOrigin = process.env.MENSA_CORS_ALLOWORIGIN
-  return allowOrigin != null && allowOrigin !== ''
-    ? allowOrigin
-    : undefined
-}
 
 /**
  * The global logger instance.
@@ -72,16 +43,15 @@ async function fixupCachedFiles (cache: Cache): Promise<void> {
 /**
  * Run a fetch job in the background, with the interval set in the config.
  *
+ * @param config The application config.
  * @param cache The plan cache to use.
  */
-async function startFetchJob (cache: Cache): Promise<void> {
-  const period = ms(config.fetchJob.interval)
-
+async function startFetchJob (config: Config, cache: Cache): Promise<void> {
   // run the job once immediately, and then repeatedly
-  await runFetchJob(logger, cache)
+  await runFetchJob(config, logger, cache)
   const interval = setInterval(() => {
-    void runFetchJob(logger, cache)
-  }, period)
+    void runFetchJob(config, logger, cache)
+  }, config.fetch.interval)
 
   onTermination(() => clearInterval(interval))
 }
@@ -90,17 +60,22 @@ async function startFetchJob (cache: Cache): Promise<void> {
  * Application entrypoint.
  */
 async function main (): Promise<void> {
-  const cacheDirectory = getCacheDirectory()
-  logger.info(`Using cache directory "${cacheDirectory}"`)
+  const config = getConfig()
 
-  const fsAdapter = new DirectoryAdapter(cacheDirectory)
+  logger.info(`Using cache directory "${config.cacheDirectory}"`)
+
+  const fsAdapter = new DirectoryAdapter(config.cacheDirectory)
   await fsAdapter.init()
 
   const cache = new Cache(fsAdapter)
 
   await fixupCachedFiles(cache)
-  await startFetchJob(cache)
-  await startServer(logger, cache, { allowOrigin: getAllowOrigin() })
+  await startFetchJob(config, cache)
+  await startServer(logger, cache, {
+    host: config.server.host,
+    port: config.server.port,
+    allowOrigin: config.corsAllowOrigin
+  })
 }
 
 await main()
