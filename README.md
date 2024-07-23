@@ -19,7 +19,7 @@ The entire project is written in JavaScript+TypeScript and is composed as follow
 - [ka-mensa-fetch](https://github.com/meyfa/ka-mensa-fetch): library package
     responsible for the fetching of raw plan data and conversion into canonical,
     easily digestible JSON documents
-- [ka-mensa-api](https://github.com/meyfa/ka-mensa-api): NodeJS server that
+- [ka-mensa-api](https://github.com/meyfa/ka-mensa-api): Node.js server that
     utilizes the fetcher to continuously collect meal plans and makes them
     available via REST API
 - [ka-mensa-ui](https://github.com/meyfa/ka-mensa-ui): single-page web app
@@ -36,9 +36,37 @@ somewhere and run `npm install` to load dependencies.
 
 ### Configuration
 
-Open up `src/config.ts` and configure to your liking. Notice that network options
-are rather limited. If you want HTTPS support or advanced embedding into existing
-domain structures, you will need to set up a reverse proxy, such as nginx.
+ka-mensa-api is configured exclusively via environment variables that need to
+be set before starting the server. The following variables are available:
+
+- `CACHE_DIRECTORY`: The path to a directory where downloaded plans should be 
+  stored, and where they should be served from. Defaults to a `cache/` inside
+  the current working directory.
+- `SERVER_HOST`: The address to listen on, e.g. `::` (or `0.0.0.0`) for all
+  interfaces, `::1` (or `127.0.0.1`) for localhost only. Defaults to `::`.
+- `SERVER_PORT`: The port to listen on. Defaults to `8080`.
+- `CORS_ALLOWORIGIN`: Set this to a specific URL to allow CORS requests from
+  that URL, or set to `*` to allow all origins. Defaults to no CORS headers.
+- `FETCH_INTERVAL`: The time between runs of the fetcher. Default: `6 hours`.
+- `FETCH_SOURCE`: The source to fetch plans from. Available options are
+  `simplesite` and `jsonapi`. Default: `'simplesite'`.
+
+If using the `simplesite` source:
+
+- `SIMPLESITE_DAYS`: The number of days to fetch from the simplesite
+  source. More may be fetched, depending on how many the server returns for
+  the specific request. Default: `14`.
+
+If using the `jsonapi` source:
+
+- `JSONAPI_AUTH_USERNAME`: Credentials for JSON API authentication.
+- `JSONAPI_AUTH_PASSWORD`: Credentials for JSON API authentication.
+
+Notice that network options are rather limited. If you want HTTPS support or
+advanced embedding into existing domain structures, you will need to set up a
+reverse proxy such as nginx.
+
+### Data Source
 
 You might want to change the plan fetch source. This will not impact the API
 behavior but only how data is retrieved. There are two options available:
@@ -63,7 +91,7 @@ and auth requirements.
 
 To start the server, run `npm start`. It will immediately fetch the most recent
 set of plans, then listen for API requests. Plan polling will continue
-indefinitely with the interval set in `src/config.ts`.
+indefinitely with the configured interval.
 
 Note that `npm start` is shortcut for `npm run build` followed by `npm run production`,
 where the former compiles the TypeScript code and the latter executes it.
@@ -77,7 +105,7 @@ will not be changed.
 
 ## Setup with Docker
 
-This project is available as a Docker image! See also
+This project is available as a Docker image. See also
 [https://hub.docker.com/r/meyfa/ka-mensa-api](https://hub.docker.com/r/meyfa/ka-mensa-api).
 
 ### Running the Container
@@ -100,36 +128,26 @@ docker run \
         -d meyfa/ka-mensa-api
 ```
 
+Any configuration can be done via environment variables (`-e VAR=value`). The
+available variables are the same as for the standard setup.
+
 ### CORS Headers
 
 Perhaps you need to configure CORS for the API server - to enable displaying
 the plans via an instance of `ka-mensa-ui` running on another domain, for
-example. This can be done via the config file or by setting an environment
-variable:
+example:
 
 ```
 docker run \
         --name mensa \
         -p <host-port>:8080 \
         -v /path/on/host:/usr/src/app/cache \
-        -e MENSA_CORS_ALLOWORIGIN=https://example.com \
+        -e CORS_ALLOWORIGIN=https://example.com \
         -d meyfa/ka-mensa-api
 ```
 
 Specify a regular URL to only allow that one origin. Use `*` to allow all
 origins.
-
-
-## Environment Variables
-
-Some options can be configured via environment variables. They are as follows:
-
-- `MENSA_CACHE_DIRECTORY`: The path to a directory where downloaded plans
-    should be stored, and where they should be served from.
-    Defaults to a `cache/` directory inside the working directory.
-- `MENSA_CORS_ALLOWORIGIN`: Set this to a specific URL to allow CORS requests
-    from that URL, or set to `*` to allow all origins.
-    Defaults to not serving any CORS headers.
 
 
 ## Development

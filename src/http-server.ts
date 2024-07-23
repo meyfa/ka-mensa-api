@@ -1,5 +1,4 @@
 import { onTermination } from 'omniwheel'
-import config from './config.js'
 import { Cache } from './cache.js'
 import fastify, { FastifyInstance } from 'fastify'
 import cors from '@fastify/cors'
@@ -15,6 +14,8 @@ import { Logger } from 'winston'
  * Options for the HTTP server.
  */
 export interface HttpServerOptions {
+  host: string
+  port: number
   allowOrigin?: string
 }
 
@@ -27,11 +28,13 @@ export interface HttpServerOptions {
  * @returns The Fastify instance.
  */
 export async function startServer (logger: Logger, cache: Cache, options: HttpServerOptions): Promise<FastifyInstance> {
+  const { host, port, allowOrigin } = options
+
   const app = fastify()
 
   // CORS
-  if (options.allowOrigin != null) {
-    await app.register(cors, { origin: options.allowOrigin })
+  if (allowOrigin != null) {
+    await app.register(cors, { origin: allowOrigin })
   }
 
   // error handling
@@ -55,8 +58,6 @@ export async function startServer (logger: Logger, cache: Cache, options: HttpSe
   await app.register(canteensRoute(), { prefix: '/canteens' })
   await app.register(plansRoute(cache), { prefix: '/plans' })
 
-  const port = config.server.port
-  const host = config.server.host
   await app.listen({ port, host })
 
   logger.info(`Server listening on :${port}`)
