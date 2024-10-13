@@ -41,17 +41,17 @@ describe('fixup.ts', function () {
     }]
   }]
 
-  const missingCanteenId: TestPlansFactory = (date) => good(date).map(plan => ({
+  const missingCanteenId: TestPlansFactory = (date) => good(date).map((plan) => ({
     ...plan,
     id: null
   }))
 
-  const missingLineId: TestPlansFactory = (date) => good(date).map(plan => ({
+  const missingLineId: TestPlansFactory = (date) => good(date).map((plan) => ({
     ...plan,
     lines: [plan.lines[0], { ...plan.lines[1], id: null }]
   }))
 
-  const missingBoth: TestPlansFactory = (date) => good(date).map(plan => ({
+  const missingBoth: TestPlansFactory = (date) => good(date).map((plan) => ({
     ...plan,
     id: null,
     lines: [plan.lines[0], { ...plan.lines[1], id: null }]
@@ -224,7 +224,8 @@ describe('fixup.ts', function () {
       })
       assert.deepStrictEqual(calls, [plans[0].date])
       assert.deepStrictEqual(adapter.writeOperations, ['2022-09-01.json', '2022-09-01.json'])
-      const updatedPlans = await cache.get(plans[0].date) as CanteenPlan[]
+      const updatedPlans = await cache.get(plans[0].date)
+      assert.ok(updatedPlans != null)
       assert.strictEqual(updatedPlans.length, 2)
       assert.deepStrictEqual(updatedPlans[0], plans[0])
       assert.deepStrictEqual(updatedPlans[1], { ...plans[1], id: canteens[1].id })

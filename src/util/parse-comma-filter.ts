@@ -7,9 +7,10 @@
  * @returns The entries, or undefined if parsing failed.
  */
 export function parseCommaFilter (str: string, allowedValues: string[]): string[] | undefined {
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (str == null || str.length === 0) {
     return undefined
   }
   const items = [...new Set(str.split(','))]
-  return items.every(item => allowedValues.includes(item)) ? items : undefined
+  return items.every((item) => allowedValues.includes(item)) ? items : undefined
 }

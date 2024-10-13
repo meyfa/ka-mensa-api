@@ -102,8 +102,8 @@ describe('cache.ts', function () {
       const list = await cache.list()
       // Note: list can have any order
       assert.strictEqual(list.length, 2)
-      assert.ok(list.some(item => item.year === 2020 && item.month === 8 && item.day === 7))
-      assert.ok(list.some(item => item.year === 2020 && item.month === 8 && item.day === 8))
+      assert.ok(list.some((item) => item.year === 2020 && item.month === 8 && item.day === 7))
+      assert.ok(list.some((item) => item.year === 2020 && item.month === 8 && item.day === 8))
     })
 
     it('ignores files not matching the expected name format', async function () {

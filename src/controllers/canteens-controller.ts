@@ -4,14 +4,14 @@ import { NotFoundError } from '../errors.js'
 /**
  * A map: canteen id -> canteen object.
  */
-const CANTEENS_BY_ID = new Map(canteens.map(canteen => [canteen.id, canteen]))
+const CANTEENS_BY_ID = new Map(canteens.map((canteen) => [canteen.id, canteen]))
 
 /**
  * A map: canteen id -> (map: line id -> line object).
  */
-const CANTEEN_LINES_BY_ID = new Map(canteens.map(canteen => [
+const CANTEEN_LINES_BY_ID = new Map(canteens.map((canteen) => [
   canteen.id,
-  new Map(canteen.lines.map(line => [line.id, line]))
+  new Map(canteen.lines.map((line) => [line.id, line]))
 ]))
 
 /**

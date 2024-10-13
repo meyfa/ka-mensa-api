@@ -54,7 +54,7 @@ export class PlansController {
    */
   async getSummaries (): Promise<PlanSummary[]> {
     const dates = await this.cache.list()
-    return dates.map(date => ({ date }))
+    return dates.map((date) => ({ date }))
   }
 
   /**
@@ -71,7 +71,7 @@ export class PlansController {
       throw new NotFoundError('plan')
     }
     if (canteensFilter != null) {
-      data = data.filter(entry => entry.id != null && canteensFilter.includes(entry.id))
+      data = data.filter((entry) => entry.id != null && canteensFilter.includes(entry.id))
     }
     return data.map(mapPlan)
   }

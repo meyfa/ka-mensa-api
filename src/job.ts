@@ -123,7 +123,7 @@ export async function runFetchJob (config: Config, logger: Logger, cache: Cache)
       continue
     }
 
-    const canteensList = plansForDate.map(plan => plan.id).join(',')
+    const canteensList = plansForDate.map((plan) => plan.id).join(',')
     logger.info(`caching ${formattedDate} with ${plansForDate.length} canteens: [${canteensList}]`)
 
     await cache.put(date, plansForDate)

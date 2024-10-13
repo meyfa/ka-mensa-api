@@ -17,7 +17,7 @@ function fixup (plan: CanteenPlan): CanteenPlan {
     // Canteen id cannot be fixed, and neither can line names without a canteen id for context.
     return plan
   }
-  const lines = plan.lines.map(line => ({ ...line, id: line.id ?? matchLineByName(canteenId, line.name) ?? null }))
+  const lines = plan.lines.map((line) => ({ ...line, id: line.id ?? matchLineByName(canteenId, line.name) ?? null }))
   if (canteenId === plan.id && plan.lines.every((line, index) => line.id === lines[index].id)) {
     // Nothing to fix.
     return plan
@@ -42,7 +42,7 @@ export async function fixupCache (cache: Cache, callback: ((date: DateSpec) => b
     if (plans == null) {
       continue
     }
-    const fixedPlans = plans.map(plan => fixup(plan))
+    const fixedPlans = plans.map((plan) => fixup(plan))
     if (fixedPlans.some((fixedPlan, index) => fixedPlan !== plans[index]) && callback(date)) {
       await cache.put(date, fixedPlans)
     }
