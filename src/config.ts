@@ -115,7 +115,7 @@ function validatePositiveInteger (str: string): number {
  * @param str The string to validate.
  * @returns The string if it is valid.
  */
-function validateEnum <T extends readonly string[]> (allowed: T, str: string): T[number] {
+function validateEnum<T extends readonly string[]> (allowed: T, str: string): T[number] {
   if (!allowed.includes(str)) {
     throw new Error(`invalid value: "${str}", allowed: ${allowed.join(', ')}`)
   }
@@ -130,6 +130,7 @@ function validateEnum <T extends readonly string[]> (allowed: T, str: string): T
  */
 function validateDuration (str: string): number {
   const duration = ms(str)
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (duration == null || Number.isNaN(duration) || duration <= 0) {
     throw new Error(`invalid duration: "${str}"`)
   }

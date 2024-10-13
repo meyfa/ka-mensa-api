@@ -32,7 +32,7 @@ function getRequestDate (dateParam: string): DateSpec {
  * @param query.canteens The raw canteens filter.
  * @returns The parsed canteens filter.
  */
-function getCanteensFilter (query: { canteens: string | string[] }): string[] | undefined {
+function getCanteensFilter (query: { canteens?: string | string[] }): string[] | undefined {
   if (query.canteens == null) {
     return undefined
   }

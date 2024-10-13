@@ -47,7 +47,7 @@ describe(`route: ${route}/{canteenId}`, function () {
     assert.strictEqual(response.statusCode, HttpStatus.OK)
     assert.deepStrictEqual(response.json(), {
       success: true,
-      data: canteens.find(c => c.id === 'adenauerring')
+      data: canteens.find((c) => c.id === 'adenauerring')
     })
   })
 })
@@ -73,7 +73,7 @@ describe(`route: ${route}/{canteenId}/lines`, function () {
     assert.strictEqual(response.statusCode, HttpStatus.OK)
     assert.deepStrictEqual(response.json(), {
       success: true,
-      data: canteens.find(c => c.id === 'adenauerring')?.lines
+      data: canteens.find((c) => c.id === 'adenauerring')?.lines
     })
   })
 })
@@ -104,7 +104,7 @@ describe(`route: ${route}/{canteenId}/lines/{lineId}`, function () {
     assert.strictEqual(response.statusCode, HttpStatus.OK)
     assert.deepStrictEqual(response.json(), {
       success: true,
-      data: canteens.find(c => c.id === 'adenauerring')?.lines.find(l => l.id === 'l1')
+      data: canteens.find((c) => c.id === 'adenauerring')?.lines.find((l) => l.id === 'l1')
     })
   })
 })
