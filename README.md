@@ -39,7 +39,7 @@ somewhere and run `npm install` to load dependencies.
 ka-mensa-api is configured exclusively via environment variables that need to
 be set before starting the server. The following variables are available:
 
-- `CACHE_DIRECTORY`: The path to a directory where downloaded plans should be 
+- `CACHE_DIRECTORY`: The path to a directory where downloaded plans should be
   stored, and where they should be served from. Defaults to a `cache/` inside
   the current working directory.
 - `SERVER_HOST`: The address to listen on, e.g. `::` (or `0.0.0.0`) for all
@@ -113,19 +113,25 @@ This project is available as a Docker image. See also
 If you just want to get going:
 
 ```sh
-docker run --name mensa -p <host-port>:8080 -d meyfa/ka-mensa-api
+docker run --detach \
+    --name=mensa \
+    --restart=unless-stopped \
+    --cap-drop=all \
+    --security-opt=no-new-privileges \
+    --read-only \
+    -p=8080:8080 \
+    meyfa/ka-mensa-api
 ```
 
 If you would like to put the cache in a volume (highly recommended!) so it has
 enough room to grow, is available after restarting the container and/or can be
-accessed from the host: Mount to `/usr/src/app/cache` like so:
+accessed from the host - add a volume mount for `/usr/src/app/cache`:
 
 ```sh
-docker run \
-        --name mensa \
-        -p <host-port>:8080 \
-        -v /path/on/host:/usr/src/app/cache \
-        -d meyfa/ka-mensa-api
+docker run --detach \
+    # ... other options ...
+    --volume=/path/on/host:/usr/src/app/cache \
+    meyfa/ka-mensa-api
 ```
 
 Any configuration can be done via environment variables (`-e VAR=value`). The
@@ -137,13 +143,11 @@ Perhaps you need to configure CORS for the API server - to enable displaying
 the plans via an instance of `ka-mensa-ui` running on another domain, for
 example:
 
-```
-docker run \
-        --name mensa \
-        -p <host-port>:8080 \
-        -v /path/on/host:/usr/src/app/cache \
-        -e CORS_ALLOWORIGIN=https://example.com \
-        -d meyfa/ka-mensa-api
+```sh
+docker run --detach \
+    # ... other options ...
+    --env=CORS_ALLOWORIGIN=https://example.com \
+    meyfa/ka-mensa-api
 ```
 
 Specify a regular URL to only allow that one origin. Use `*` to allow all

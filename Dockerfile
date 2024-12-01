@@ -10,15 +10,16 @@ RUN npm ci
 COPY . .
 RUN npm run build
 
-
 # -- execution --
 FROM node:22.11.0-alpine
 WORKDIR /usr/src/app
 
-# install PRODUCTION dependencies
+RUN apk add --no-cache tini
+
+# install production dependencies
 COPY package*.json ./
 RUN npm ci --omit=dev \
-  && apk add --no-cache tini
+  && npm cache clean --force
 
 # add the already compiled code
 COPY --from=build /usr/src/app/dist dist
@@ -28,4 +29,4 @@ EXPOSE 8080
 
 # use tini as init process since Node.js isn't designed to be run as PID 1
 ENTRYPOINT ["/sbin/tini", "--"]
-CMD ["node", "dist/server.js"]
+CMD ["node", "--enable-source-maps", "--disable-proto=delete", "dist/server.js"]
