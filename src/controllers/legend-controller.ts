@@ -1,4 +1,4 @@
-import { LegendItem, legend } from 'ka-mensa-fetch'
+import { type LegendItem, legend } from 'ka-mensa-fetch'
 
 /**
  * API controller for retrieving the legend.

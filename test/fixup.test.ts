@@ -1,7 +1,7 @@
 import assert from 'node:assert'
 import { Cache } from '../src/cache.js'
-import { MemoryAdapter, ReadWriteOptions } from 'fs-adapters'
-import { CanteenPlan, canteens, DateSpec } from 'ka-mensa-fetch'
+import { MemoryAdapter, type ReadWriteOptions } from 'fs-adapters'
+import { type CanteenPlan, canteens, type DateSpec } from 'ka-mensa-fetch'
 import { fixupCache } from '../src/fixup.js'
 
 /**
