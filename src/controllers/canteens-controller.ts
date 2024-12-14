@@ -1,4 +1,4 @@
-import { Canteen, Line, canteens } from 'ka-mensa-fetch'
+import { type Canteen, type Line, canteens } from 'ka-mensa-fetch'
 import { NotFoundError } from '../errors.js'
 
 /**

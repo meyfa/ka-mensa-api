@@ -1,5 +1,5 @@
-import { CanteenPlan, DateSpec, matchCanteenByName, matchLineByName } from 'ka-mensa-fetch'
-import { Cache } from './cache.js'
+import { type CanteenPlan, type DateSpec, matchCanteenByName, matchLineByName } from 'ka-mensa-fetch'
+import type { Cache } from './cache.js'
 
 /**
  * Fix a single plan. This fills in missing data (specifically: IDs) by matching it against existing data

@@ -1,10 +1,10 @@
-import { DateSpec, canteens } from 'ka-mensa-fetch'
-import { Cache } from '../cache.js'
+import { type DateSpec, canteens } from 'ka-mensa-fetch'
+import type { Cache } from '../cache.js'
 import { parseDate } from '../util/date-format.js'
 import { PlansController } from '../controllers/plans-controller.js'
 import { BadRequestError } from '../errors.js'
 import { parseCommaFilter } from '../util/parse-comma-filter.js'
-import { FastifyPluginAsync } from 'fastify'
+import type { FastifyPluginAsync } from 'fastify'
 import { sendResult } from '../response.js'
 
 const CANTEEN_IDS = canteens.map(({ id }) => id)

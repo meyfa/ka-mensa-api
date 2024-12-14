@@ -1,5 +1,5 @@
-import { FastifyReply } from 'fastify'
-import { ApiError } from './errors.js'
+import type { FastifyReply } from 'fastify'
+import type { ApiError } from './errors.js'
 
 /**
  * Respond with an error message.

@@ -1,6 +1,6 @@
 import { onTermination } from 'omniwheel'
-import { Cache } from './cache.js'
-import fastify, { FastifyInstance } from 'fastify'
+import type { Cache } from './cache.js'
+import fastify, { type FastifyInstance } from 'fastify'
 import cors from '@fastify/cors'
 import { sendError } from './response.js'
 import { ApiError, BadRequestError, InternalServerError, NotFoundError } from './errors.js'

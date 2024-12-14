@@ -1,12 +1,12 @@
-import { CanteenPlan, DateSpec, fetchMensa } from 'ka-mensa-fetch'
+import { type CanteenPlan, type DateSpec, fetchMensa } from 'ka-mensa-fetch'
 import { group } from 'group-items'
 import moment from 'moment'
 import ms from 'ms'
-import { Config } from './config.js'
+import type { Config } from './config.js'
 import { getSessionCookie } from './get-session-cookie.js'
-import { Cache } from './cache.js'
+import type { Cache } from './cache.js'
 import { formatDate } from './util/date-format.js'
-import { Logger } from 'winston'
+import type { Logger } from 'winston'
 
 /**
  * Maximum age of a plan that is still considered valid for caching. If a plan

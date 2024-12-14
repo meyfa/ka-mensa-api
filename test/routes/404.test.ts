@@ -3,7 +3,7 @@ import { Cache } from '../../src/cache.js'
 import { MemoryAdapter } from 'fs-adapters'
 import assert from 'node:assert'
 import { HttpStatus } from 'omniwheel'
-import { FastifyInstance } from 'fastify'
+import type { FastifyInstance } from 'fastify'
 import winston from 'winston'
 import { defaultOptions } from './fixtures.js'
 

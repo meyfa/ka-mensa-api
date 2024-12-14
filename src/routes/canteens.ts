@@ -1,5 +1,5 @@
 import { CanteensController } from '../controllers/canteens-controller.js'
-import { FastifyPluginAsync } from 'fastify'
+import type { FastifyPluginAsync } from 'fastify'
 import { sendResult } from '../response.js'
 
 /**

@@ -1,5 +1,5 @@
 import { legendRoute } from './legend.js'
-import { FastifyPluginAsync } from 'fastify'
+import type { FastifyPluginAsync } from 'fastify'
 
 /**
  * Create the route that combines meta information routes.

@@ -1,6 +1,6 @@
 import { formatDate, parseDate } from './util/date-format.js'
-import { Adapter } from 'fs-adapters'
-import { CanteenPlan, DateSpec } from 'ka-mensa-fetch'
+import type { Adapter } from 'fs-adapters'
+import type { CanteenPlan, DateSpec } from 'ka-mensa-fetch'
 
 /**
  * ENOENT error code.

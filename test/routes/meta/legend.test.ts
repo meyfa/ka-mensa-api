@@ -4,7 +4,7 @@ import { MemoryAdapter } from 'fs-adapters'
 import assert from 'node:assert'
 import { HttpStatus } from 'omniwheel'
 import { legend } from 'ka-mensa-fetch'
-import { FastifyInstance } from 'fastify'
+import type { FastifyInstance } from 'fastify'
 import winston from 'winston'
 import { defaultOptions } from '../fixtures.js'
 

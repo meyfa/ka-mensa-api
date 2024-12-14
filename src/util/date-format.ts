@@ -1,4 +1,4 @@
-import { DateSpec } from 'ka-mensa-fetch'
+import type { DateSpec } from 'ka-mensa-fetch'
 
 /**
  * Format the given date spec into a string YYYY-MM-DD.

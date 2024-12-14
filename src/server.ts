@@ -1,5 +1,5 @@
 import { DirectoryAdapter } from 'fs-adapters'
-import { Config, getConfig } from './config.js'
+import { type Config, getConfig } from './config.js'
 import { Cache } from './cache.js'
 import { runFetchJob } from './job.js'
 import { onTermination } from 'omniwheel'
