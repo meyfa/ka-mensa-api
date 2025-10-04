@@ -36,19 +36,3 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm test
-
-  coverage:
-    name: Coverage
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v5
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          cache: npm
-      - run: npm ci
-      - uses: paambaati/codeclimate-action@v9.0.0
-        env:
-          CC_TEST_REPORTER_ID: 10e37056052b202e8d2bf9e2c61a8e2cb1432d01518fd0886c2bff4c353eefa4
-        with:
-          coverageCommand: npm run coverage
