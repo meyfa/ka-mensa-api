@@ -1,8 +1,6 @@
 # ka-mensa-api
 
 [![CI](https://github.com/meyfa/ka-mensa-api/actions/workflows/main.yml/badge.svg)](https://github.com/meyfa/ka-mensa-api/actions/workflows/main.yml)
-[![Test Coverage](https://api.codeclimate.com/v1/badges/9b1f9ce6f3bec49c26a1/test_coverage)](https://codeclimate.com/github/meyfa/ka-mensa-api/test_coverage)
-[![Maintainability](https://api.codeclimate.com/v1/badges/9b1f9ce6f3bec49c26a1/maintainability)](https://codeclimate.com/github/meyfa/ka-mensa-api/maintainability)
 
 
 ## Introduction
