@@ -39,7 +39,7 @@ export async function startServer (logger: Logger, cache: Cache, options: HttpSe
 
   // error handling
   app.setErrorHandler(async (error, req, reply) => {
-    if (error instanceof SyntaxError && error.statusCode != null && error.statusCode >= 400 && error.statusCode < 500) {
+    if (error instanceof SyntaxError && 'statusCode' in error && typeof error.statusCode === 'number' && error.statusCode >= 400 && error.statusCode < 500) {
       // JSON input error
       return await sendError(reply, new BadRequestError('malformed input'))
     } else if (error instanceof ApiError) {
