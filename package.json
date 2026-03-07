@@ -35,7 +35,7 @@
   },
   "dependencies": {
     "@fastify/cors": "11.2.0",
-    "fastify": "5.8.1",
+    "fastify": "5.8.2",
     "fs-adapters": "7.0.2",
     "group-items": "4.0.0",
     "ka-mensa-fetch": "5.0.0",
