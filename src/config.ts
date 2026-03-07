@@ -129,7 +129,7 @@ function validateEnum<T extends readonly string[]> (allowed: T, str: string): T[
  * @returns The parsed duration in milliseconds.
  */
 function validateDuration (str: string): number {
-  const duration = ms(str)
+  const duration = ms(str as ms.StringValue)
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (duration == null || Number.isNaN(duration) || duration <= 0) {
     throw new Error(`invalid duration: "${str}"`)
