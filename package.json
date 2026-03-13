@@ -45,7 +45,7 @@
     "winston": "3.19.0"
   },
   "devDependencies": {
-    "@meyfa/eslint-config": "8.0.1",
+    "@meyfa/eslint-config": "9.0.0",
     "@types/mocha": "10.0.10",
     "@types/ms": "2.1.0",
     "@types/node": "24.12.0",
